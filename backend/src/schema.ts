@@ -28,6 +28,9 @@ export const typeDefs = gql`
     createComment(
       authorId: ID!, articleId: ID!, content: String!
     ): CreateCommentResponse
+    updateUser(
+      id: ID!, username: String, password: String, bio: String
+    ): UpdateUserResponse!
   }
 
   type CreateUserResponse{
@@ -63,6 +66,13 @@ export const typeDefs = gql`
     email: String!
     username: String!
     bio: String
+  }
+
+  type UpdateUserResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    user: User
   }
 
   type Article {

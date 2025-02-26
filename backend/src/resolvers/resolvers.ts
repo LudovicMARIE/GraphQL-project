@@ -3,6 +3,7 @@ import { createArticle } from "../mutations/articles/createArticle.js";
 import { signIn } from "../mutations/users/signIn.js";
 import { Resolvers } from "../types.js"
 import { createComment } from "../mutations/articles/createComment.js";
+import { updateUser } from "../mutations/users/updateUser.js";
 
 
 export const resolvers: Resolvers = {
@@ -12,6 +13,7 @@ export const resolvers: Resolvers = {
     Mutation: {
       createUser,
       signIn,
+      updateUser,
       createArticle,
       createComment,
     }
