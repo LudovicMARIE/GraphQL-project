@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Article, PrismaClient } from "@prisma/client";
 import { AuthenticatedUser } from "../modules/auth";
 
 export type Context = {
