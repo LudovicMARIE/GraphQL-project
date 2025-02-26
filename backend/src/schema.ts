@@ -23,6 +23,12 @@ export const typeDefs = gql`
       content: String!
       published: Boolean
     ): CreateArticleResponse!
+    updateArticle(
+      articleId: ID!
+      title: String
+      content: String
+      published: Boolean
+    ): UpdateArticleResponse!
   }
 
   type CreateUserResponse{
@@ -33,6 +39,13 @@ export const typeDefs = gql`
   }
 
   type CreateArticleResponse{
+    code: Int!
+    success: Boolean!
+    message: String!
+    article: Article
+  }
+
+  type UpdateArticleResponse {
     code: Int!
     success: Boolean!
     message: String!
