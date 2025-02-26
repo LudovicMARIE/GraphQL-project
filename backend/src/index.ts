@@ -3,7 +3,8 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import { resolvers } from './resolvers/resolvers.js';
 import { typeDefs } from './schema.js';
 import { getUser } from './modules/auth.js';
-import  db  from './datasources/db.js'
+import db from './datasources/db.js'
+import "dotenv/config";
 
 
 const server = new ApolloServer({
