@@ -5,6 +5,7 @@ export const typeDefs = gql`
   type Query {
     getAllArticles: [Article!]!
     getArticlesByUserId(userId: ID!): [Article!]!
+    getArticleById(articleId: ID!): Article!
     
     likes: [Like!]!
     like(id: ID!): Like
@@ -51,6 +52,11 @@ export const typeDefs = gql`
     deleteArticle(
       articleId: ID!
     ): DeleteArticleResponse!
+    createComment(
+      authorId: ID!
+      articleId: ID!
+      content: String!
+    ): CreateCommentResponse
     
     deleteLike(id: ID!): Boolean!
     
@@ -127,7 +133,7 @@ export const typeDefs = gql`
     content: String!
     published: Boolean!
     authorId: String!
-    author: [User]!
+    author: User!
   }
 
   type Comment {

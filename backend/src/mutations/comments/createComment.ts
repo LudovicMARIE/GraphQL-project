@@ -19,14 +19,7 @@ export const createComment: MutationResolvers['createComment'] = async (_, { aut
       code: 201,
       success: true,
       message: 'the comment has been created',
-      user: {
-        id: createComment.id,
-        authorId: createComment.authorId,
-        content: createComment.content,
-        articleId: createComment.articleId,
-        email: user?.email || "Not provided",
-        username: user?.username || "Not provided"
-      }
+      user: user
     }
   } catch (e) {
     return {

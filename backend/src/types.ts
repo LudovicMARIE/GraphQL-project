@@ -22,7 +22,7 @@ export type Scalars = {
 
 export type Article = {
   __typename?: 'Article';
-  author: Array<Maybe<User>>;
+  author: User;
   authorId: Scalars['String']['output'];
   content: Scalars['String']['output'];
   id: Scalars['ID']['output'];
@@ -173,6 +173,7 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   getAllArticles: Array<Article>;
+  getArticleById: Article;
   getArticlesByUserId: Array<Article>;
   hasUserLiked: Scalars['Boolean']['output'];
   like?: Maybe<Like>;
@@ -180,6 +181,11 @@ export type Query = {
   likes: Array<Like>;
   likesByArticle: Array<Like>;
   likesByUser: Array<Like>;
+};
+
+
+export type QueryGetArticleByIdArgs = {
+  articleId: Scalars['ID']['input'];
 };
 
 
@@ -361,7 +367,7 @@ export type ResolversParentTypes = {
 };
 
 export type ArticleResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
-  author?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   authorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -449,6 +455,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getAllArticles?: Resolver<Array<ResolversTypes['Article']>, ParentType, ContextType>;
+  getArticleById?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<QueryGetArticleByIdArgs, 'articleId'>>;
   getArticlesByUserId?: Resolver<Array<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<QueryGetArticlesByUserIdArgs, 'userId'>>;
   hasUserLiked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryHasUserLikedArgs, 'articleId' | 'userId'>>;
   like?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType, RequireFields<QueryLikeArgs, 'id'>>;
