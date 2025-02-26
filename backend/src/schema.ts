@@ -14,21 +14,33 @@ export const typeDefs = gql`
       username: String!
       bio: String
     ): CreateUserResponse
+    
     signIn(
       email: String!
       password: String!
     ): SignInResponse
+    
+    updateUser(
+      id: ID!, username: String, password: String, bio: String
+    ): UpdateUserResponse!
+    
     createArticle(
       title: String!
       content: String!
       published: Boolean
     ): CreateArticleResponse!
+    
+    createComment(
+      authorId: ID!, articleId: ID!, content: String!
+    ): CreateCommentResponse
+    
     updateArticle(
       articleId: ID!
       title: String
       content: String
       published: Boolean
     ): UpdateArticleResponse!
+    
     deleteArticle(
       articleId: ID!
     ): DeleteArticleResponse!
@@ -80,6 +92,13 @@ export const typeDefs = gql`
     email: String!
     username: String!
     bio: String
+  }
+
+  type UpdateUserResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    user: User
   }
 
   type Article {
