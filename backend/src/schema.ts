@@ -5,22 +5,12 @@ export const typeDefs = gql`
   type Query {
     getAllArticles: [Article!]!
     getArticlesByUserId(userId: ID!): [Article!]!
-    # Get all likes
+    
     likes: [Like!]!
-    
-    # Get a specific like by ID
     like(id: ID!): Like
-    
-    # Get likes by article ID
     likesByArticle(articleId: ID!): [Like!]!
-    
-    # Get likes by user ID
     likesByUser(userId: ID!): [Like!]!
-    
-    # Count likes for an article
     likeCount(articleId: ID!): Int!
-    
-    # Check if a user has liked an article
     hasUserLiked(userId: ID!, articleId: ID!): Boolean!
   }
 
@@ -49,18 +39,11 @@ export const typeDefs = gql`
     deleteArticle(
       articleId: ID!
     ): DeleteArticleResponse!
-
-
-    # Create a new like
-    createLike(userId: ID!, articleId: ID!): Like!
     
-    # Delete a like by ID
     deleteLike(id: ID!): Boolean!
     
-    # Delete a like by user ID and article ID
     unlikeArticle(userId: ID!, articleId: ID!): Boolean!
     
-    # Toggle like status (like if not liked, unlike if already liked)
     toggleLike(userId: ID!, articleId: ID!): LikeToggleResponse!
   }
 
