@@ -4,10 +4,9 @@ import { updateArticle } from "../mutations/articles/updateArticles.js";
 import { deleteArticle } from "../mutations/articles/deleteArticle.js";
 import { signIn } from "../mutations/users/signIn.js";
 import { Resolvers } from "../types.js"
-import { createComment } from "../mutations/articles/createComment.js";
+import { createComment } from "../mutations/comments/createComment.js";
 import { updateUser } from "../mutations/users/updateUser.js";
 import { articleQueries } from "../mutations/articles/getArticles.js";
-import { createComment } from "../mutations/comments/createComment.js";
 
 export const resolvers: Resolvers = {
     Query: {
