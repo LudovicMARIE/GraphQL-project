@@ -25,13 +25,7 @@ export const createArticle: MutationResolvers['createArticle'] = async (_, {titl
         code: 201,
         success: true,
         message: 'L\'article a été créé avec succès',
-        article: {
-          id: createdArticle.id,
-          title: createdArticle.title,
-          content: createdArticle.content,
-          published: createdArticle.published,
-          authorId: createdArticle.authorId
-        }
+        article: createdArticle
       };
   } catch (e) {
     return {

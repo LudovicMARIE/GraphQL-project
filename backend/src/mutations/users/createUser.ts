@@ -16,12 +16,7 @@ export const createUser: MutationResolvers['createUser'] = async (_, {email, pas
       code: 201,
       success: true,
       message: 'the user has been created',
-      user: {
-        id: createdUser.id,
-        email: createdUser.email,
-        username: createdUser.username,
-        bio: createdUser.bio
-      }
+      user: createdUser
     }
   } catch(e) {
     return {

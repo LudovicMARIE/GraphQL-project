@@ -1,14 +1,5 @@
-export type AuthorModel = {
-    id: string;
-    email: string;
-    username: string;
-    bio: string;
-}
+import { Article, User } from "@prisma/client";
 
-export type ArticleModel = {
-    id: string;
-    title: string;
-    content: string;
-    published: Boolean;
-    author: string[];
-}
+export type AuthorModel = Omit<User, 'password'>
+
+export type ArticleModel = Article

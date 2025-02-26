@@ -5,6 +5,7 @@ export const typeDefs = gql`
   type Query {
     getAllArticles: [Article!]!
     getArticlesByUserId(userId: ID!): [Article!]!
+    getArticleById(articleId: ID!): Article!
   }
 
   type Mutation{
@@ -32,6 +33,11 @@ export const typeDefs = gql`
     deleteArticle(
       articleId: ID!
     ): DeleteArticleResponse!
+    createComment(
+      authorId: ID!
+      articleId: ID!
+      content: String!
+    ): CreateCommentResponse
   }
 
   type CreateUserResponse{
@@ -88,7 +94,7 @@ export const typeDefs = gql`
     content: String!
     published: Boolean!
     authorId: String!
-    author: [User]!
+    author: User!
   }
 
   type Comment {
