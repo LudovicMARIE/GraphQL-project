@@ -1,12 +1,12 @@
-import { ArticleModel } from "../../models/models.js";
+// import { ArticleModel } from "../../models/models.js";
 import { MutationResolvers } from "../../types.js";
 
 
 export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, articleId}, {dataSources: {db}}) => {
     try {
-    const article: ArticleModel = await db.article.findFirstOrThrow({
-        where: { id: articleId}
-    })
+    // const article: ArticleModel = await db.article.findFirstOrThrow({
+    //     where: { id: articleId}
+    // })
 
     const toggleLike = await db.like.create({
         data: {

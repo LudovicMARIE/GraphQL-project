@@ -9,6 +9,6 @@ export type ArticleModel = {
     id: string;
     title: string;
     content: string;
-    published: Boolean;
+    published: boolean;
     author: string[];
 }

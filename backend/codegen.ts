@@ -8,8 +8,8 @@ const config: CodegenConfig = {
       config: {
         contextType: './context/context#Context',
         mappers: {
-          User: './models#AuthorModel',
-          Article: './models#ArticleModel'
+          User: './models/models#AuthorModel',
+          Article: './models/models#ArticleModel'
         }
       }
     }
