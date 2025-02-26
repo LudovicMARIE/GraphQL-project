@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const typeDefs = gql`
-
+  scalar DateTime
   type Query {
     getAllArticles: [Article!]!
     getArticlesByUserId(userId: ID!): [Article!]!
@@ -68,6 +68,13 @@ export const typeDefs = gql`
     token: String!
   }
 
+  type CreateCommentResponse{
+    code: Int!
+    success: Boolean!
+    message: String!
+    user: User
+  }
+
   type User{
     id: ID!
     email: String!
@@ -82,6 +89,16 @@ export const typeDefs = gql`
     published: Boolean!
     authorId: String!
     author: [User]!
+  }
+
+  type Comment {
+    id: ID!
+    content: String!
+    authorId: String!
+    author: User!
+    articleId: String!
+    article: Article!
+    createdAt: DateTime!
   }
     
 `;
