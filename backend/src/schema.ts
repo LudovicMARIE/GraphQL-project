@@ -29,6 +29,9 @@ export const typeDefs = gql`
       content: String
       published: Boolean
     ): UpdateArticleResponse!
+    deleteArticle(
+      articleId: ID!
+    ): DeleteArticleResponse!
   }
 
   type CreateUserResponse{
@@ -50,6 +53,12 @@ export const typeDefs = gql`
     success: Boolean!
     message: String!
     article: Article
+  }
+
+  type DeleteArticleResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
   }
 
   type SignInResponse{
