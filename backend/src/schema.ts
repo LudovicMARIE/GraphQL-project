@@ -38,9 +38,7 @@ export const typeDefs = gql`
       published: Boolean
     ): CreateArticleResponse!
     
-    createComment(
-      authorId: ID!, articleId: ID!, content: String!
-    ): CreateCommentResponse
+
     
     updateArticle(
       articleId: ID!
