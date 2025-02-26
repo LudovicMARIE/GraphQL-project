@@ -16,6 +16,10 @@ export const typeDefs = gql`
       username: String!
       bio: String
     ): CreateUserResponse
+    signIn(
+      email: String!
+      password: String!
+    ): SignInResponse
   }
 
   type CreateUserResponse{
@@ -23,6 +27,13 @@ export const typeDefs = gql`
     success: Boolean!
     message: String!
     user: User
+  }
+
+  type SignInResponse{
+    code: Int!
+    success: Boolean!
+    message: String!
+    token: String!
   }
 
   type User{
