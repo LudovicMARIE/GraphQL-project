@@ -3,7 +3,7 @@ import { MutationResolvers } from "../../types.js";
 
 export const createArticle: MutationResolvers['createArticle'] = async (_, {title, content}, {dataSources: {db}, user}) => {
   try {
-
+    // console.log("user createArticle: ", user);
     if (!user?.id) {
         return {
           code: 401,
