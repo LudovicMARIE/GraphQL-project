@@ -7,6 +7,7 @@ import { Resolvers } from "../types.js"
 import { createComment } from "../mutations/comments/createComment.js";
 import { updateUser } from "../mutations/users/updateUser.js";
 import { articleQueries } from "../mutations/articles/getArticles.js";
+import { toggleLike } from "../mutations/likes/toggleLike.js";
 
 export const resolvers: Resolvers = {
     Query: {
@@ -20,6 +21,7 @@ export const resolvers: Resolvers = {
       updateArticle,
       deleteArticle,
       createComment,
+      toggleLike
     },
     Article: {
       author: async (parent, _, { dataSources }) => {
