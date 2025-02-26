@@ -11,7 +11,7 @@ export const updateUser: MutationResolvers["updateUser"] = async (_, { id, passw
       return {
         code: 404,
         success: false,
-        message: "User not found",
+        message: "Utilisateur introuvale",
         user: null,
       };
     }
@@ -33,14 +33,15 @@ export const updateUser: MutationResolvers["updateUser"] = async (_, { id, passw
     return {
       code: 200,
       success: true,
-      message: "User profile updated successfully",
+      message: "L'utilisateur à bien été mis à jour",
       user: updatedUser,
     };
   } catch (e) {
     return {
       code: 500,
       success: false,
-      message: (e as Error).message,
+      message: "Erreur lors de la mise à jour de l\'utilisateur",
+      // message: (e as Error).message,
       user: null,
     };
   }

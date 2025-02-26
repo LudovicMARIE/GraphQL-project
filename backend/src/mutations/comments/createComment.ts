@@ -1,9 +1,19 @@
 import { MutationResolvers } from "../../types.js";
 
-export const createComment: MutationResolvers['createComment'] = async (_, { authorId, content, articleId }, { dataSources: { db } }) => {
+export const createComment: MutationResolvers['createComment'] = async (_, { authorId, content, articleId }, { dataSources: { db }, user }) => {
 
   try {
-    const createComment = await db.comment.create({
+
+    if (!user?.id) {
+      return {
+        code: 401,
+        success: false,
+        message: "Vous devez être connecté pour poster un commentaire",
+        comment: null
+      };
+    }
+
+    const createdComment = await db.comment.create({
       data: {
         authorId,
         content,
@@ -11,22 +21,19 @@ export const createComment: MutationResolvers['createComment'] = async (_, { aut
       }
     });
 
-    const user = await db.user.findUnique({
-      where: { id: authorId }
-    });
-
     return {
       code: 201,
       success: true,
-      message: 'the comment has been created',
-      user: user
+      message: "Le commentaire à bien été posté",
+      comment: createdComment
     }
   } catch (e) {
     return {
       code: 400,
       success: false,
-      message: (e as Error).message,
-      user: null,
+      message: "Erreur lors de la publication du commentaire",
+      // message: (e as Error).message,
+      comment: null,
     }
   }
 }

@@ -11,7 +11,7 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
         })
 
         if(!user){
-            throw new Error('User not found try with another email')
+            throw new Error("Utilisateur introuvale essayez avec un autre email")
         }
 
         var isPasswordValid = await comparePasswords(password, user.password)
@@ -19,7 +19,7 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
 
         
         if(!isPasswordValid){
-            throw new Error('Invalid password')
+            throw new Error("Mot de passe invalide")
         }
             
         const userToken = createJWT(user)
@@ -27,13 +27,14 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
         return {
           code: 201,
           success: true,
-          message: `user ${email} | ${username} has been logged `,
+          message: `L'utilisateur ${email} | ${username} est connecté(e)`,
           token: userToken,
         }
       } catch {
         return {
           code: 400,
-          message: 'User has not been logged',
+          message: "Erreur lors de la connexion de l\'utilisateur",
+          // message: (e as Error).message,
           success: false,
           token: ""
         }

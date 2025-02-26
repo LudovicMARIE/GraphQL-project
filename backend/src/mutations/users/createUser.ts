@@ -15,14 +15,15 @@ export const createUser: MutationResolvers['createUser'] = async (_, {email, pas
     return {
       code: 201,
       success: true,
-      message: 'the user has been created',
+      message: "L\'utilisateur à bien été crée",
       user: createdUser
     }
   } catch(e) {
     return {
       code: 400,
       success: false,
-      message: (e as Error).message,
+      message: "Erreur lors de la création de l\'utilisateur",
+      // message: (e as Error).message,
       user: null,
     }
   }

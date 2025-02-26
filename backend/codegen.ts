@@ -9,7 +9,8 @@ const config: CodegenConfig = {
         contextType: './context/context#Context',
         mappers: {
           User: './models/models#AuthorModel',
-          Article: './models/models#ArticleModel'
+          Article: './models/models#ArticleModel',
+          Comment: './models/models#CommentModel'
         }
       }
     }

@@ -53,6 +53,7 @@ export const updateArticle: MutationResolvers['updateArticle'] = async (_, { art
         code: 500,
         success: false,
         message: "Erreur lors de la mise à jour de l'article",
+        // message: (e as Error).message,
         article: null,
       };
     }

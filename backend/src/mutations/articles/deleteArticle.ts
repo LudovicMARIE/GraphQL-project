@@ -19,7 +19,7 @@ export const deleteArticle: MutationResolvers['deleteArticle'] = async (_, { art
         return {
           code: 404,
           success: false,
-          message: "Article non trouvé",
+          message: "Article introuvable",
           article: null,
         };
       }
@@ -33,7 +33,7 @@ export const deleteArticle: MutationResolvers['deleteArticle'] = async (_, { art
         };
       }
 
-      const updatedArticle = await db.article.delete({
+      await db.article.delete({
         where: { id: articleId },
       });
 
@@ -41,14 +41,13 @@ export const deleteArticle: MutationResolvers['deleteArticle'] = async (_, { art
         code: 200,
         success: true,
         message: "Article supprimé avec succès",
-        article: updatedArticle,
       };
     } catch (e) {
       return {
         code: 500,
         success: false,
         message: "Erreur lors de la suppression de l'article",
-        article: null,
+        // message: (e as Error).message,
       };
     }
   };

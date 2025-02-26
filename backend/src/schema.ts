@@ -22,7 +22,10 @@ export const typeDefs = gql`
     ): SignInResponse
     
     updateUser(
-      id: ID!, username: String, password: String, bio: String
+      id: ID!, 
+      username: String, 
+      password: String, 
+      bio: String
     ): UpdateUserResponse!
     
     createArticle(
@@ -30,10 +33,6 @@ export const typeDefs = gql`
       content: String!
       published: Boolean
     ): CreateArticleResponse!
-    
-    createComment(
-      authorId: ID!, articleId: ID!, content: String!
-    ): CreateCommentResponse
     
     updateArticle(
       articleId: ID!
@@ -45,11 +44,22 @@ export const typeDefs = gql`
     deleteArticle(
       articleId: ID!
     ): DeleteArticleResponse!
+    
     createComment(
       authorId: ID!
       articleId: ID!
       content: String!
     ): CreateCommentResponse
+
+    updateComment(
+      id: ID!
+      content: String!
+    ): UpdateCommentResponse
+
+    deleteComment(
+      id: ID!
+    ): DeleteCommentResponse
+
   }
 
   type CreateUserResponse{
@@ -90,7 +100,20 @@ export const typeDefs = gql`
     code: Int!
     success: Boolean!
     message: String!
-    user: User
+    comment: Comment
+  }
+
+  type UpdateCommentResponse{
+    code: Int!
+    success: Boolean!
+    message: String!
+    comment: Comment
+  }
+
+  type DeleteCommentResponse{
+    code: Int!
+    success: Boolean!
+    message: String!
   }
 
   type User{
@@ -114,6 +137,7 @@ export const typeDefs = gql`
     published: Boolean!
     authorId: String!
     author: User!
+    comment: [Comment!]
   }
 
   type Comment {
@@ -124,6 +148,7 @@ export const typeDefs = gql`
     articleId: String!
     article: Article!
     createdAt: DateTime!
+    updatedAt: DateTime!
   }
     
 `;

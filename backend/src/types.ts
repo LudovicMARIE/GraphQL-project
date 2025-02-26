@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { AuthorModel, ArticleModel } from './models/models';
+import { AuthorModel, ArticleModel, CommentModel } from './models/models';
 import { Context } from './context/context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -24,6 +24,7 @@ export type Article = {
   __typename?: 'Article';
   author: User;
   authorId: Scalars['String']['output'];
+  comment?: Maybe<Array<Comment>>;
   content: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   published: Scalars['Boolean']['output'];
@@ -39,6 +40,7 @@ export type Comment = {
   content: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type CreateArticleResponse = {
@@ -52,9 +54,9 @@ export type CreateArticleResponse = {
 export type CreateCommentResponse = {
   __typename?: 'CreateCommentResponse';
   code: Scalars['Int']['output'];
+  comment?: Maybe<Comment>;
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
-  user?: Maybe<User>;
 };
 
 export type CreateUserResponse = {
@@ -72,14 +74,23 @@ export type DeleteArticleResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type DeleteCommentResponse = {
+  __typename?: 'DeleteCommentResponse';
+  code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createArticle: CreateArticleResponse;
   createComment?: Maybe<CreateCommentResponse>;
   createUser?: Maybe<CreateUserResponse>;
   deleteArticle: DeleteArticleResponse;
+  deleteComment?: Maybe<DeleteCommentResponse>;
   signIn?: Maybe<SignInResponse>;
   updateArticle: UpdateArticleResponse;
+  updateComment?: Maybe<UpdateCommentResponse>;
   updateUser: UpdateUserResponse;
 };
 
@@ -111,6 +122,11 @@ export type MutationDeleteArticleArgs = {
 };
 
 
+export type MutationDeleteCommentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationSignInArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -122,6 +138,12 @@ export type MutationUpdateArticleArgs = {
   content?: InputMaybe<Scalars['String']['input']>;
   published?: InputMaybe<Scalars['Boolean']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationUpdateCommentArgs = {
+  content: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -161,6 +183,14 @@ export type UpdateArticleResponse = {
   __typename?: 'UpdateArticleResponse';
   article?: Maybe<Article>;
   code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
+export type UpdateCommentResponse = {
+  __typename?: 'UpdateCommentResponse';
+  code: Scalars['Int']['output'];
+  comment?: Maybe<Comment>;
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
 };
@@ -254,12 +284,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Article: ResolverTypeWrapper<ArticleModel>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  Comment: ResolverTypeWrapper<Omit<Comment, 'article' | 'author'> & { article: ResolversTypes['Article'], author: ResolversTypes['User'] }>;
+  Comment: ResolverTypeWrapper<CommentModel>;
   CreateArticleResponse: ResolverTypeWrapper<Omit<CreateArticleResponse, 'article'> & { article?: Maybe<ResolversTypes['Article']> }>;
-  CreateCommentResponse: ResolverTypeWrapper<Omit<CreateCommentResponse, 'user'> & { user?: Maybe<ResolversTypes['User']> }>;
+  CreateCommentResponse: ResolverTypeWrapper<Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversTypes['Comment']> }>;
   CreateUserResponse: ResolverTypeWrapper<Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversTypes['User']> }>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   DeleteArticleResponse: ResolverTypeWrapper<DeleteArticleResponse>;
+  DeleteCommentResponse: ResolverTypeWrapper<DeleteCommentResponse>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -267,6 +298,7 @@ export type ResolversTypes = {
   SignInResponse: ResolverTypeWrapper<SignInResponse>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateArticleResponse: ResolverTypeWrapper<Omit<UpdateArticleResponse, 'article'> & { article?: Maybe<ResolversTypes['Article']> }>;
+  UpdateCommentResponse: ResolverTypeWrapper<Omit<UpdateCommentResponse, 'comment'> & { comment?: Maybe<ResolversTypes['Comment']> }>;
   UpdateUserResponse: ResolverTypeWrapper<Omit<UpdateUserResponse, 'user'> & { user?: Maybe<ResolversTypes['User']> }>;
   User: ResolverTypeWrapper<AuthorModel>;
 };
@@ -275,12 +307,13 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Article: ArticleModel;
   Boolean: Scalars['Boolean']['output'];
-  Comment: Omit<Comment, 'article' | 'author'> & { article: ResolversParentTypes['Article'], author: ResolversParentTypes['User'] };
+  Comment: CommentModel;
   CreateArticleResponse: Omit<CreateArticleResponse, 'article'> & { article?: Maybe<ResolversParentTypes['Article']> };
-  CreateCommentResponse: Omit<CreateCommentResponse, 'user'> & { user?: Maybe<ResolversParentTypes['User']> };
+  CreateCommentResponse: Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversParentTypes['Comment']> };
   CreateUserResponse: Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversParentTypes['User']> };
   DateTime: Scalars['DateTime']['output'];
   DeleteArticleResponse: DeleteArticleResponse;
+  DeleteCommentResponse: DeleteCommentResponse;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
@@ -288,6 +321,7 @@ export type ResolversParentTypes = {
   SignInResponse: SignInResponse;
   String: Scalars['String']['output'];
   UpdateArticleResponse: Omit<UpdateArticleResponse, 'article'> & { article?: Maybe<ResolversParentTypes['Article']> };
+  UpdateCommentResponse: Omit<UpdateCommentResponse, 'comment'> & { comment?: Maybe<ResolversParentTypes['Comment']> };
   UpdateUserResponse: Omit<UpdateUserResponse, 'user'> & { user?: Maybe<ResolversParentTypes['User']> };
   User: AuthorModel;
 };
@@ -295,6 +329,7 @@ export type ResolversParentTypes = {
 export type ArticleResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   authorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<Array<ResolversTypes['Comment']>>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   published?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -310,6 +345,7 @@ export type CommentResolvers<ContextType = Context, ParentType extends Resolvers
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -323,9 +359,9 @@ export type CreateArticleResponseResolvers<ContextType = Context, ParentType ext
 
 export type CreateCommentResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['CreateCommentResponse'] = ResolversParentTypes['CreateCommentResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -348,13 +384,22 @@ export type DeleteArticleResponseResolvers<ContextType = Context, ParentType ext
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DeleteCommentResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['DeleteCommentResponse'] = ResolversParentTypes['DeleteCommentResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createArticle?: Resolver<ResolversTypes['CreateArticleResponse'], ParentType, ContextType, RequireFields<MutationCreateArticleArgs, 'content' | 'title'>>;
   createComment?: Resolver<Maybe<ResolversTypes['CreateCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'articleId' | 'authorId' | 'content'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>;
   deleteArticle?: Resolver<ResolversTypes['DeleteArticleResponse'], ParentType, ContextType, RequireFields<MutationDeleteArticleArgs, 'articleId'>>;
+  deleteComment?: Resolver<Maybe<ResolversTypes['DeleteCommentResponse']>, ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SignInResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
   updateArticle?: Resolver<ResolversTypes['UpdateArticleResponse'], ParentType, ContextType, RequireFields<MutationUpdateArticleArgs, 'articleId'>>;
+  updateComment?: Resolver<Maybe<ResolversTypes['UpdateCommentResponse']>, ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'content' | 'id'>>;
   updateUser?: Resolver<ResolversTypes['UpdateUserResponse'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id'>>;
 };
 
@@ -375,6 +420,14 @@ export type SignInResponseResolvers<ContextType = Context, ParentType extends Re
 export type UpdateArticleResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UpdateArticleResponse'] = ResolversParentTypes['UpdateArticleResponse']> = {
   article?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType>;
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UpdateCommentResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UpdateCommentResponse'] = ResolversParentTypes['UpdateCommentResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -404,10 +457,12 @@ export type Resolvers<ContextType = Context> = {
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   DeleteArticleResponse?: DeleteArticleResponseResolvers<ContextType>;
+  DeleteCommentResponse?: DeleteCommentResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SignInResponse?: SignInResponseResolvers<ContextType>;
   UpdateArticleResponse?: UpdateArticleResponseResolvers<ContextType>;
+  UpdateCommentResponse?: UpdateCommentResponseResolvers<ContextType>;
   UpdateUserResponse?: UpdateUserResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };

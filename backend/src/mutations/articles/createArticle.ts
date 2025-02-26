@@ -31,7 +31,8 @@ export const createArticle: MutationResolvers['createArticle'] = async (_, {titl
     return {
       code: 400,
       success: false,
-      message: (e as Error).message,
+      message: "Erreur lors de la création de l'article",
+      // message: (e as Error).message,
       article: null
     };
   }
