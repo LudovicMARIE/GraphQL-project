@@ -1,10 +1,11 @@
+import { User } from "@prisma/client";
 import { hashPassword } from "../../modules/auth.js";
 import { MutationResolvers } from "../../types.js";
  
 // add createdAt
 export const createUser: MutationResolvers['createUser'] = async (_, {email, password, username, bio}, {dataSources: {db}}) => {
   try {
-    const createdUser = await db.user.create({
+    const createdUser: User = await db.user.create({
       data: {
         email,
         password: await hashPassword(password),

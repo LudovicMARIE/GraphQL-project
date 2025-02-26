@@ -25,10 +25,38 @@ export type CreateUserResponse = {
   user?: Maybe<User>;
 };
 
+export type Like = {
+  __typename?: 'Like';
+  article: Scalars['String']['output'];
+  articleId: Scalars['ID']['output'];
+  createdAt: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  user: User;
+  userId: Scalars['ID']['output'];
+};
+
+export type LikeToggleResponse = {
+  __typename?: 'LikeToggleResponse';
+  code: Scalars['Int']['output'];
+  like?: Maybe<Like>;
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createLike: Like;
   createUser?: Maybe<CreateUserResponse>;
+  deleteLike: Scalars['Boolean']['output'];
   signIn?: Maybe<SignInResponse>;
+  toggleLike: LikeToggleResponse;
+  unlikeArticle: Scalars['Boolean']['output'];
+};
+
+
+export type MutationCreateLikeArgs = {
+  articleId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -40,41 +68,62 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationDeleteLikeArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationSignInArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
+
+export type MutationToggleLikeArgs = {
+  articleId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationUnlikeArticleArgs = {
+  articleId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  add: Scalars['Float']['output'];
-  divide?: Maybe<Scalars['Float']['output']>;
-  multiply: Scalars['Float']['output'];
-  substract: Scalars['Float']['output'];
+  hasUserLiked: Scalars['Boolean']['output'];
+  like?: Maybe<Like>;
+  likeCount: Scalars['Int']['output'];
+  likes: Array<Like>;
+  likesByArticle: Array<Like>;
+  likesByUser: Array<Like>;
 };
 
 
-export type QueryAddArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
+export type QueryHasUserLikedArgs = {
+  articleId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
-export type QueryDivideArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
+export type QueryLikeArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type QueryMultiplyArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
+export type QueryLikeCountArgs = {
+  articleId: Scalars['ID']['input'];
 };
 
 
-export type QuerySubstractArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
+export type QueryLikesByArticleArgs = {
+  articleId: Scalars['ID']['input'];
+};
+
+
+export type QueryLikesByUserArgs = {
+  userId: Scalars['ID']['input'];
 };
 
 export type SignInResponse = {
@@ -166,9 +215,10 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CreateUserResponse: ResolverTypeWrapper<CreateUserResponse>;
-  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Like: ResolverTypeWrapper<Like>;
+  LikeToggleResponse: ResolverTypeWrapper<LikeToggleResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   SignInResponse: ResolverTypeWrapper<SignInResponse>;
@@ -180,9 +230,10 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   CreateUserResponse: CreateUserResponse;
-  Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  Like: Like;
+  LikeToggleResponse: LikeToggleResponse;
   Mutation: {};
   Query: {};
   SignInResponse: SignInResponse;
@@ -198,16 +249,40 @@ export type CreateUserResponseResolvers<ContextType = Context, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type LikeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Like'] = ResolversParentTypes['Like']> = {
+  article?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  articleId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LikeToggleResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['LikeToggleResponse'] = ResolversParentTypes['LikeToggleResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  like?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createLike?: Resolver<ResolversTypes['Like'], ParentType, ContextType, RequireFields<MutationCreateLikeArgs, 'articleId' | 'userId'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>;
+  deleteLike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteLikeArgs, 'id'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SignInResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
+  toggleLike?: Resolver<ResolversTypes['LikeToggleResponse'], ParentType, ContextType, RequireFields<MutationToggleLikeArgs, 'articleId' | 'userId'>>;
+  unlikeArticle?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUnlikeArticleArgs, 'articleId' | 'userId'>>;
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  add?: Resolver<ResolversTypes['Float'], ParentType, ContextType, RequireFields<QueryAddArgs, 'number1' | 'number2'>>;
-  divide?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryDivideArgs, 'number1' | 'number2'>>;
-  multiply?: Resolver<ResolversTypes['Float'], ParentType, ContextType, RequireFields<QueryMultiplyArgs, 'number1' | 'number2'>>;
-  substract?: Resolver<ResolversTypes['Float'], ParentType, ContextType, RequireFields<QuerySubstractArgs, 'number1' | 'number2'>>;
+  hasUserLiked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryHasUserLikedArgs, 'articleId' | 'userId'>>;
+  like?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType, RequireFields<QueryLikeArgs, 'id'>>;
+  likeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryLikeCountArgs, 'articleId'>>;
+  likes?: Resolver<Array<ResolversTypes['Like']>, ParentType, ContextType>;
+  likesByArticle?: Resolver<Array<ResolversTypes['Like']>, ParentType, ContextType, RequireFields<QueryLikesByArticleArgs, 'articleId'>>;
+  likesByUser?: Resolver<Array<ResolversTypes['Like']>, ParentType, ContextType, RequireFields<QueryLikesByUserArgs, 'userId'>>;
 };
 
 export type SignInResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SignInResponse'] = ResolversParentTypes['SignInResponse']> = {
@@ -228,6 +303,8 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
 
 export type Resolvers<ContextType = Context> = {
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
+  Like?: LikeResolvers<ContextType>;
+  LikeToggleResponse?: LikeToggleResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SignInResponse?: SignInResponseResolvers<ContextType>;

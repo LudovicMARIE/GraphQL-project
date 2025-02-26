@@ -1,0 +1,19 @@
+mutation UpdateUser($id: ID!, $input: UpdateUserInput!) {
+  updateUser(id: $id, input: $input) {
+    id
+    username
+    email
+    bio
+  }
+}
+
+mutation FollowUser($followerId: ID!, $followingId: ID!) {
+  followUser(followerId: $followerId, followingId: $followingId) {
+    followerId
+    followingId
+  }
+}
+
+mutation UnfollowUser($followerId: ID!, $followingId: ID!) {
+  unfollowUser(followerId: $followerId, followingId: $followingId)
+}

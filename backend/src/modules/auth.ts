@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 import * as bcrypt from "bcrypt";
  
 export const createJWT = (user: User) => {
-  const token = jwt.sign(
+  const token: string = jwt.sign(
     { id: user.id, username: user.username },
     process.env.JWT_SECRET as string
   );

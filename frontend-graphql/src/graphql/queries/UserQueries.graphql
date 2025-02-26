@@ -1,0 +1,49 @@
+query GetUser($username: String!) {
+  user(username: $username) {
+    id
+    username
+    email
+    bio
+    createdAt
+  }
+}
+
+query GetUserStats($userId: ID!) {
+  userStats(userId: $userId) {
+    articleCount
+    followerCount
+    followingCount
+  }
+}
+
+query GetTopAuthors($limit: Int) {
+  topAuthors(limit: $limit) {
+    id
+    username
+    articleCount
+  }
+}
+
+query IsFollowing($followerId: ID!, $followingId: ID!) {
+  isFollowing(followerId: $followerId, followingId: $followingId)
+}
+
+query GetFollowers($userId: ID!) {
+  followers(userId: $userId) {
+    id
+    username
+  }
+}
+
+query GetFollowing($userId: ID!) {
+  following(userId: $userId) {
+    id
+    username
+  }
+}
+
+query GetMe {
+  me {
+    ...UserProfile
+  }
+}
