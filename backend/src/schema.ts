@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const typeDefs = gql`
-
+  scalar DateTime
   type Query {
     add(number1: Float!, number2: Float!): Float!
     substract(number1: Float!, number2: Float!): Float!
@@ -25,6 +25,9 @@ export const typeDefs = gql`
       content: String!
       published: Boolean
     ): CreateArticleResponse!
+    createComment(
+      authorId: ID!, articleId: ID!, content: String!
+    ): CreateCommentResponse
   }
 
   type CreateUserResponse{
@@ -48,6 +51,13 @@ export const typeDefs = gql`
     token: String!
   }
 
+  type CreateCommentResponse{
+    code: Int!
+    success: Boolean!
+    message: String!
+    user: User
+  }
+
   type User{
     id: ID!
     email: String!
@@ -62,6 +72,16 @@ export const typeDefs = gql`
     published: Boolean!
     authorId: String!
     author: User
+  }
+
+  type Comment {
+    id: ID!
+    content: String!
+    authorId: String!
+    author: User!
+    articleId: String!
+    article: Article!
+    createdAt: DateTime!
   }
     
 `;
