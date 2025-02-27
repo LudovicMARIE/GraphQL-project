@@ -1,9 +1,0 @@
-fragment CommentBasic on Comment {
-  id
-  content
-  createdAt
-  updatedAt
-  author {
-    ...UserBasic
-  }
-}
