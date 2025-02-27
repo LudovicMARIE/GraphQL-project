@@ -58,7 +58,7 @@ export const resolvers: Resolvers = {
             updatedAt: true,
           }
         });
-        console.log(comments);
+        // console.log(comments);
         return comments;
       },
       like: async (parent, _, { dataSources }) => {
@@ -72,7 +72,7 @@ export const resolvers: Resolvers = {
             userId: true,
           }
         });
-        console.log(likes);
+        // console.log(likes);
         return likes;
       }
     },

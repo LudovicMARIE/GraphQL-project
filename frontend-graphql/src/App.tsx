@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import './App.css'
-
 import { Route, Routes } from "react-router-dom"
 import Index from './Pages/Index'
 import Register from './Pages/Register'

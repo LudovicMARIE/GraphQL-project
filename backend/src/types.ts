@@ -185,12 +185,6 @@ export type Query = {
   getAllArticles: Array<Article>;
   getArticleById: Article;
   getArticlesByUserId: Array<Article>;
-  hasUserLiked: Scalars['Boolean']['output'];
-  like?: Maybe<Like>;
-  likeCount: Scalars['Int']['output'];
-  likes: Array<Like>;
-  likesByArticle: Array<Like>;
-  likesByUser: Array<Like>;
 };
 
 
@@ -200,32 +194,6 @@ export type QueryGetArticleByIdArgs = {
 
 
 export type QueryGetArticlesByUserIdArgs = {
-  userId: Scalars['ID']['input'];
-};
-
-
-export type QueryHasUserLikedArgs = {
-  articleId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
-
-export type QueryLikeArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryLikeCountArgs = {
-  articleId: Scalars['ID']['input'];
-};
-
-
-export type QueryLikesByArticleArgs = {
-  articleId: Scalars['ID']['input'];
-};
-
-
-export type QueryLikesByUserArgs = {
   userId: Scalars['ID']['input'];
 };
 
@@ -489,12 +457,6 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   getAllArticles?: Resolver<Array<ResolversTypes['Article']>, ParentType, ContextType>;
   getArticleById?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<QueryGetArticleByIdArgs, 'articleId'>>;
   getArticlesByUserId?: Resolver<Array<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<QueryGetArticlesByUserIdArgs, 'userId'>>;
-  hasUserLiked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryHasUserLikedArgs, 'articleId' | 'userId'>>;
-  like?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType, RequireFields<QueryLikeArgs, 'id'>>;
-  likeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryLikeCountArgs, 'articleId'>>;
-  likes?: Resolver<Array<ResolversTypes['Like']>, ParentType, ContextType>;
-  likesByArticle?: Resolver<Array<ResolversTypes['Like']>, ParentType, ContextType, RequireFields<QueryLikesByArticleArgs, 'articleId'>>;
-  likesByUser?: Resolver<Array<ResolversTypes['Like']>, ParentType, ContextType, RequireFields<QueryLikesByUserArgs, 'userId'>>;
 };
 
 export type SignInResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SignInResponse'] = ResolversParentTypes['SignInResponse']> = {

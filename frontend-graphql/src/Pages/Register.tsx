@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+
 // import { useRequireOfflineUser } from "../Utils/Security/AuthorizationHelper";
-import RegisterForm from '../Components/Authentification/RegisterForm.jsx';
+import RegisterForm from '../components/Authentification/RegisterForm';
 
 function Register() {
   // useRequireOfflineUser();
