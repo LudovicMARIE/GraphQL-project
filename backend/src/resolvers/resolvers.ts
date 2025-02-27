@@ -9,6 +9,7 @@ import { updateUser } from "../mutations/users/updateUser.js";
 import { articleQueries } from "../mutations/articles/getArticles.js";
 import { updateComment } from "../mutations/comments/updateComment.js";
 import { deleteComment } from "../mutations/comments/deleteComment.js";
+import { toggleLike } from "../mutations/likes/toggleLike.js";
 
 export const resolvers: Resolvers = {
     Query: {
@@ -24,6 +25,7 @@ export const resolvers: Resolvers = {
       createComment,
       updateComment,
       deleteComment,
+      toggleLike
     },
     Article: {
       author: async (parent, _, { dataSources }) => {
@@ -59,5 +61,56 @@ export const resolvers: Resolvers = {
         console.log(comments);
         return comments;
       },
+      like: async (parent, _, { dataSources }) => {
+        const likes = await dataSources.db.like.findMany({
+          where: { articleId: parent.id },
+          select: {
+            id: true,
+            user: true,
+            createdAt: true,
+            articleId: true,
+            userId: true,
+          }
+        });
+        console.log(likes);
+        return likes;
+      }
     },
+    Like: {
+      user: async (parent, _, { dataSources }) => {
+        const user = await dataSources.db.user.findUnique({
+          where: { id: parent.userId },
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            bio: true,
+            createdAt: true,  
+            updatedAt: true,
+          }
+        });
+        if (!user) {
+          throw new Error("Auteur non trouvé");
+        }
+        return user;
+      },
+      article: async (parent, _, { dataSources }) => {
+        const article = await dataSources.db.article.findUnique({
+          where: { id: parent.articleId },
+          select: {
+            id: true,
+            title: true,
+            content: true,
+            published: true,
+            createdAt: true,
+            updatedAt: true,
+            authorId: true,
+          }
+        });
+        if (!article) {
+          throw new Error("Auteur non trouvé");
+        }
+        return article;
+      },
+    }
 }

@@ -1,0 +1,23 @@
+mutation SignUp($data: SignUpInput!) {
+  signUp(data: $data) {
+    token
+    user {
+      ...UserBasic
+    }
+  }
+}
+
+mutation SignIn($data: SignInInput!) {
+  signIn(data: $data) {
+    token
+    user {
+      ...UserBasic
+    }
+  }
+}
+
+mutation UpdateProfile($data: UserUpdateInput!) {
+  updateProfile(data: $data) {
+    ...UserProfile
+  }
+}
