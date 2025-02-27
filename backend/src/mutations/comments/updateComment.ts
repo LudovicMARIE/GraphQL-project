@@ -1,3 +1,4 @@
+import { Comment } from "@prisma/client";
 import { MutationResolvers } from "../../types.js";
 
 export const updateComment: MutationResolvers['updateComment'] = async (_, { id, content }, { dataSources: { db }, user }) => {
@@ -13,7 +14,7 @@ export const updateComment: MutationResolvers['updateComment'] = async (_, { id,
       };
     }
 
-    const existingComment = await db.comment.findUnique({
+    const existingComment: Comment | null= await db.comment.findUnique({
         where: { id: id },
     });
 
@@ -45,7 +46,7 @@ export const updateComment: MutationResolvers['updateComment'] = async (_, { id,
     return {
       code: 201,
       success: true,
-      message: 'Le commentaire à bien été modifié',
+      message: 'Le commentaire a bien été modifié',
       comment: updatedComment
     }
   } catch (e) {

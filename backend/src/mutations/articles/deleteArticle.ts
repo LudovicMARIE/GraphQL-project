@@ -1,3 +1,4 @@
+import { Article } from "@prisma/client";
 import { MutationResolvers } from "../../types.js";
 
 export const deleteArticle: MutationResolvers['deleteArticle'] = async (_, { articleId }, { dataSources: { db }, user }) => {
@@ -11,7 +12,7 @@ export const deleteArticle: MutationResolvers['deleteArticle'] = async (_, { art
         };
       }
 
-      const existingArticle = await db.article.findUnique({
+      const existingArticle: Article | null = await db.article.findUnique({
         where: { id: articleId },
       });
 

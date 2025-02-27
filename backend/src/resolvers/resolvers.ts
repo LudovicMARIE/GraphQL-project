@@ -10,6 +10,7 @@ import { articleQueries } from "../mutations/articles/getArticles.js";
 import { updateComment } from "../mutations/comments/updateComment.js";
 import { deleteComment } from "../mutations/comments/deleteComment.js";
 import { toggleLike } from "../mutations/likes/toggleLike.js";
+import { Article, Comment, Like } from "@prisma/client";
 
 export const resolvers: Resolvers = {
     Query: {
@@ -46,7 +47,7 @@ export const resolvers: Resolvers = {
         return user;
       },
       comment: async (parent, _, { dataSources }) => {
-        const comments = await dataSources.db.comment.findMany({
+        const comments : Comment[] = await dataSources.db.comment.findMany({
           where: { articleId: parent.id },
           select: {
             id: true,
@@ -62,7 +63,7 @@ export const resolvers: Resolvers = {
         return comments;
       },
       like: async (parent, _, { dataSources }) => {
-        const likes = await dataSources.db.like.findMany({
+        const likes: Like[] = await dataSources.db.like.findMany({
           where: { articleId: parent.id },
           select: {
             id: true,
@@ -95,7 +96,7 @@ export const resolvers: Resolvers = {
         return user;
       },
       article: async (parent, _, { dataSources }) => {
-        const article = await dataSources.db.article.findUnique({
+        const article: Article | null= await dataSources.db.article.findUnique({
           where: { id: parent.articleId },
           select: {
             id: true,

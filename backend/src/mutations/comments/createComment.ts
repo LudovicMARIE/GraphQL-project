@@ -1,3 +1,4 @@
+import { Comment } from "@prisma/client";
 import { MutationResolvers } from "../../types.js";
 
 export const createComment: MutationResolvers['createComment'] = async (_, { authorId, content, articleId }, { dataSources: { db }, user }) => {
@@ -13,7 +14,7 @@ export const createComment: MutationResolvers['createComment'] = async (_, { aut
       };
     }
 
-    const createdComment = await db.comment.create({
+    const createdComment: Comment = await db.comment.create({
       data: {
         authorId,
         content,
@@ -24,7 +25,7 @@ export const createComment: MutationResolvers['createComment'] = async (_, { aut
     return {
       code: 201,
       success: true,
-      message: "Le commentaire à bien été posté",
+      message: "Le commentaire a bien été posté",
       comment: createdComment
     }
   } catch (e) {

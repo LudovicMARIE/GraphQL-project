@@ -15,7 +15,7 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
             };
           }
 
-        const like = await db.like.findUnique({
+        const like : Like | null = await db.like.findUnique({
             where: {
                 userId_articleId: {
                     userId: userId,
@@ -33,10 +33,10 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
             return {
                 code : 200,
                 success: true,
-                message : "the article has been unliked",
+                message : "L'article a bien été unliké",
             }
         }else{
-            const createdLike = await db.like.create({
+            const createdLike : Like = await db.like.create({
                 data: {
                     userId,
                     articleId,
@@ -45,7 +45,7 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
             return {
                 code : 200,
                 success: true,
-                message: "the article has been liked",
+                message: "L'article a bien été liké",
                 like: createdLike, 
             }
         }

@@ -1,3 +1,4 @@
+import { Comment } from "@prisma/client";
 import { MutationResolvers } from "../../types.js";
 
 export const deleteComment: MutationResolvers['deleteComment'] = async (_, { id }, { dataSources: { db }, user }) => {
@@ -13,7 +14,7 @@ export const deleteComment: MutationResolvers['deleteComment'] = async (_, { id 
       };
     }
 
-    const existingComment = await db.comment.findUnique({
+    const existingComment: Comment | null = await db.comment.findUnique({
       where: { id: id },
     });
 
@@ -43,7 +44,7 @@ export const deleteComment: MutationResolvers['deleteComment'] = async (_, { id 
     return {
       code: 201,
       success: true,
-      message: 'Le commentaire à bien été supprimé',
+      message: 'Le commentaire a bien été supprimé',
     }
   } catch (e) {
     return {
