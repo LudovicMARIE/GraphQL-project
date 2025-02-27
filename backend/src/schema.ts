@@ -6,6 +6,13 @@ export const typeDefs = gql`
     getAllArticles: [Article!]!
     getArticlesByUserId(userId: ID!): [Article!]!
     getArticleById(articleId: ID!): Article!
+    
+    likes: [Like!]!
+    like(id: ID!): Like
+    likesByArticle(articleId: ID!): [Like!]!
+    likesByUser(userId: ID!): [Like!]!
+    likeCount(articleId: ID!): Int!
+    hasUserLiked(userId: ID!, articleId: ID!): Boolean!
   }
 
   type Mutation{
@@ -34,6 +41,8 @@ export const typeDefs = gql`
       published: Boolean
     ): CreateArticleResponse!
     
+
+    
     updateArticle(
       articleId: ID!
       title: String
@@ -60,6 +69,19 @@ export const typeDefs = gql`
       id: ID!
     ): DeleteCommentResponse
 
+    
+    deleteLike(id: ID!): Boolean!
+    
+    unlikeArticle(userId: ID!, articleId: ID!): Boolean!
+    
+    toggleLike(userId: ID!, articleId: ID!): LikeToggleResponse!
+  }
+
+  type LikeToggleResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    like: Like
   }
 
   type CreateUserResponse{
@@ -151,5 +173,14 @@ export const typeDefs = gql`
     updatedAt: DateTime!
   }
     
+
+  type Like {
+    id: ID!
+    createdAt: String!
+    userId: ID!
+    user: User!
+    articleId: ID!
+    article: String!
+  }
+    
 `;
-    // createdAt: DateTime!

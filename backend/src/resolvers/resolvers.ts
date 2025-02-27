@@ -9,6 +9,7 @@ import { updateUser } from "../mutations/users/updateUser.js";
 import { articleQueries } from "../mutations/articles/getArticles.js";
 import { updateComment } from "../mutations/comments/updateComment.js";
 import { deleteComment } from "../mutations/comments/deleteComment.js";
+import { toggleLike } from "../mutations/likes/toggleLike.js";
 
 export const resolvers: Resolvers = {
     Query: {
@@ -24,6 +25,7 @@ export const resolvers: Resolvers = {
       createComment,
       updateComment,
       deleteComment,
+      toggleLike
     },
     Article: {
       author: async (parent, _, { dataSources }) => {

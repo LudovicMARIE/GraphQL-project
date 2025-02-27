@@ -16,11 +16,8 @@ const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
   context: async ({req}) => {
     const cache = server.cache
-    // console.log("Headers reçus:", req.headers);
     const token = (req.headers.authorization)?.split('Bearer ')?.[1]
-    // console.log("Token extrait:", token);
     const user = token ? getUser(token) : null;
-    // console.log("Utilisateur récupéré:", user);
     return {
       dataSources: {
         db

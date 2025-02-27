@@ -1,10 +1,11 @@
 import {MutationResolvers} from "../../types.js"
 import { comparePasswords } from "../../modules/auth.js";
 import {createJWT} from "../../modules/auth.js"
+import { User } from "@prisma/client";
 
 export const signIn: MutationResolvers['signIn'] = async  (_, {email, password}, {dataSources: {db}}) => {
     try {
-        const user = await db.user.findFirstOrThrow({
+        const user: User = await db.user.findFirstOrThrow({
         where: {
             email: email,
         },
@@ -14,15 +15,16 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
             throw new Error("Utilisateur introuvale essayez avec un autre email")
         }
 
-        var isPasswordValid = await comparePasswords(password, user.password)
-        var username = user.username
+        let isPasswordValid: boolean = await comparePasswords(password, user.password)
+        let username: string = user.username
 
         
         if(!isPasswordValid){
             throw new Error("Mot de passe invalide")
         }
             
-        const userToken = createJWT(user)
+        console.log(user);
+        const userToken: string = createJWT(user)
       
         return {
           code: 201,
@@ -30,8 +32,8 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
           message: `L'utilisateur ${email} | ${username} est connecté(e)`,
           token: userToken,
         }
-      } catch {
-        return {
+      } catch (error){
+         return {
           code: 400,
           message: "Erreur lors de la connexion de l\'utilisateur",
           // message: (e as Error).message,

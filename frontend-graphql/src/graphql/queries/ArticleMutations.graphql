@@ -1,0 +1,29 @@
+mutation CreateArticle($data: ArticleCreateInput!) {
+  createArticle(data: $data) {
+    ...ArticleBasic
+  }
+}
+
+mutation UpdateArticle($id: ID!, $data: ArticleUpdateInput!) {
+  updateArticle(id: $id, data: $data) {
+    ...ArticleBasic
+  }
+}
+
+mutation DeleteArticle($id: ID!) {
+  deleteArticle(id: $id) {
+    id
+  }
+}
+
+mutation LikeArticle($id: ID!) {
+  likeArticle(id: $id) {
+    id
+  }
+}
+
+mutation UnlikeArticle($id: ID!) {
+  unlikeArticle(id: $id) {
+    id
+  }
+}
