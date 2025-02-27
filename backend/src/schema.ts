@@ -41,8 +41,6 @@ export const typeDefs = gql`
       published: Boolean
     ): CreateArticleResponse!
     
-
-    
     updateArticle(
       articleId: ID!
       title: String
@@ -69,12 +67,10 @@ export const typeDefs = gql`
       id: ID!
     ): DeleteCommentResponse
 
-    
-    deleteLike(id: ID!): Boolean!
-    
-    unlikeArticle(userId: ID!, articleId: ID!): Boolean!
-    
-    toggleLike(userId: ID!, articleId: ID!): LikeToggleResponse!
+    toggleLike(
+      userId: ID!, 
+      articleId: ID!
+    ): LikeToggleResponse!
   }
 
   type LikeToggleResponse {
@@ -160,6 +156,7 @@ export const typeDefs = gql`
     authorId: String!
     author: User!
     comment: [Comment!]
+    like: [Like!]
   }
 
   type Comment {
@@ -180,7 +177,7 @@ export const typeDefs = gql`
     userId: ID!
     user: User!
     articleId: ID!
-    article: String!
+    article: Article!
   }
     
 `;

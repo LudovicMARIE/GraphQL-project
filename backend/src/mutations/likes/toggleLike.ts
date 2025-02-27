@@ -3,11 +3,19 @@ import { Like } from "@prisma/client";
 import { MutationResolvers } from "../../types.js";
 
 
-export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, articleId}, {dataSources: {db}}) => {
+export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, articleId}, {dataSources: {db}, user}) => {
     try {
-
         
-        const like: Like | null = await db.like.findUnique({
+        if (!user?.id) {
+            return {
+              code: 401,
+              success: false,
+              message: "Vous devez être connecté pour créer un article",
+              article: null
+            };
+          }
+
+        const like = await db.like.findUnique({
             where: {
                 userId_articleId: {
                     userId: userId,
@@ -17,7 +25,7 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
         });
 
         if(like != null){
-            const likeDeleted: Like = await db.like.delete({
+            await db.like.delete({
                 where: {
                     id: like.id
                 }
@@ -25,10 +33,10 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
             return {
                 code : 200,
                 success: true,
-                message : 'the article has been unliked ' + like?.id,
+                message : "the article has been unliked",
             }
         }else{
-            const toggleLike = await db.like.create({
+            const createdLike = await db.like.create({
                 data: {
                     userId,
                     articleId,
@@ -37,7 +45,8 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
             return {
                 code : 200,
                 success: true,
-                message : 'the article has been liked ' + toggleLike.id,
+                message: "the article has been liked",
+                like: createdLike, 
             }
         }
 
@@ -45,7 +54,8 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
         return {
             code: 400,
             success: false,
-            message: (e as Error).message,
+            message: "Une erreur est survenue, l'action n'a pas pu aboutir",
+            // message: (e as Error).message,
         }
     }
 }

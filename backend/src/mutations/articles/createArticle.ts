@@ -8,7 +8,7 @@ export const createArticle: MutationResolvers['createArticle'] = async (_, {titl
         return {
           code: 401,
           success: false,
-          message: 'Vous devez être connecté pour créer un article',
+          message: "Vous devez être connecté pour créer un article",
           article: null
         };
       }

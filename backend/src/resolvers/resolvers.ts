@@ -62,4 +62,41 @@ export const resolvers: Resolvers = {
         return comments;
       },
     },
+    Like: {
+      user: async (parent, _, { dataSources }) => {
+        const user = await dataSources.db.user.findUnique({
+          where: { id: parent.userId },
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            bio: true,
+            createdAt: true,  
+            updatedAt: true,
+          }
+        });
+        if (!user) {
+          throw new Error("Auteur non trouvé");
+        }
+        return user;
+      },
+      article: async (parent, _, { dataSources }) => {
+        const article = await dataSources.db.article.findUnique({
+          where: { id: parent.articleId },
+          select: {
+            id: true,
+            title: true,
+            content: true,
+            published: true,
+            createdAt: true,
+            updatedAt: true,
+            authorId: true,
+          }
+        });
+        if (!article) {
+          throw new Error("Auteur non trouvé");
+        }
+        return article;
+      },
+    }
 }

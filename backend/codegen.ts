@@ -10,7 +10,8 @@ const config: CodegenConfig = {
         mappers: {
           User: './models/models#AuthorModel',
           Article: './models/models#ArticleModel',
-          Comment: './models/models#CommentModel'
+          Comment: './models/models#CommentModel',
+          Like: './models/models#LikeModel'
         }
       }
     }

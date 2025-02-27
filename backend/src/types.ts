@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import { AuthorModel, ArticleModel, CommentModel } from './models/models';
+import { AuthorModel, ArticleModel, CommentModel, LikeModel } from './models/models';
 import { Context } from './context/context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -27,6 +27,7 @@ export type Article = {
   comment?: Maybe<Array<Comment>>;
   content: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  like?: Maybe<Array<Like>>;
   published: Scalars['Boolean']['output'];
   title: Scalars['String']['output'];
 };
@@ -77,9 +78,13 @@ export type DeleteArticleResponse = {
 export type DeleteCommentResponse = {
   __typename?: 'DeleteCommentResponse';
   code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
 export type Like = {
   __typename?: 'Like';
-  article: Scalars['String']['output'];
+  article: Article;
   articleId: Scalars['ID']['output'];
   createdAt: Scalars['String']['output'];
   id: Scalars['ID']['output'];
@@ -140,6 +145,10 @@ export type MutationDeleteArticleArgs = {
 
 
 export type MutationDeleteCommentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationDeleteLikeArgs = {
   id: Scalars['ID']['input'];
 };
@@ -355,7 +364,7 @@ export type ResolversTypes = {
   DeleteCommentResponse: ResolverTypeWrapper<DeleteCommentResponse>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  Like: ResolverTypeWrapper<Omit<Like, 'user'> & { user: ResolversTypes['User'] }>;
+  Like: ResolverTypeWrapper<LikeModel>;
   LikeToggleResponse: ResolverTypeWrapper<Omit<LikeToggleResponse, 'like'> & { like?: Maybe<ResolversTypes['Like']> }>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
@@ -380,7 +389,7 @@ export type ResolversParentTypes = {
   DeleteCommentResponse: DeleteCommentResponse;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
-  Like: Omit<Like, 'user'> & { user: ResolversParentTypes['User'] };
+  Like: LikeModel;
   LikeToggleResponse: Omit<LikeToggleResponse, 'like'> & { like?: Maybe<ResolversParentTypes['Like']> };
   Mutation: {};
   Query: {};
@@ -398,6 +407,7 @@ export type ArticleResolvers<ContextType = Context, ParentType extends Resolvers
   comment?: Resolver<Maybe<Array<ResolversTypes['Comment']>>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  like?: Resolver<Maybe<Array<ResolversTypes['Like']>>, ParentType, ContextType>;
   published?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -452,8 +462,13 @@ export type DeleteArticleResponseResolvers<ContextType = Context, ParentType ext
 
 export type DeleteCommentResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['DeleteCommentResponse'] = ResolversParentTypes['DeleteCommentResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type LikeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Like'] = ResolversParentTypes['Like']> = {
-  article?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  article?: Resolver<ResolversTypes['Article'], ParentType, ContextType>;
   articleId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
