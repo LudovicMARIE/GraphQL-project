@@ -11,9 +11,15 @@ const server = new ApolloServer({
   typeDefs,
   resolvers: resolvers,
 });
+
+const port = process.env.PORT as string
+
+// parse port type (string) in Int for include the variable in "listen: { port: portNumber }"
+const portNumber = parseInt(port)
+// console.log(portNumber);
  
 const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
+  listen: { port: portNumber },
   context: async ({req}) => {
     const cache = server.cache
     const token = (req.headers.authorization)?.split('Bearer ')?.[1]

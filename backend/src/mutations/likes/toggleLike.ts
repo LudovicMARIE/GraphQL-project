@@ -33,7 +33,7 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
             return {
                 code : 200,
                 success: true,
-                message : "the article has been unliked",
+                message : "Votre like sur l\'article a été retiré",
             }
         }else{
             const createdLike = await db.like.create({
@@ -45,7 +45,7 @@ export const toggleLike: MutationResolvers['toggleLike'] = async (_, {userId, ar
             return {
                 code : 200,
                 success: true,
-                message: "the article has been liked",
+                message: "L\'article a été liké",
                 like: createdLike, 
             }
         }
