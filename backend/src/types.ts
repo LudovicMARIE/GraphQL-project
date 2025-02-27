@@ -107,10 +107,8 @@ export type Mutation = {
   createUser?: Maybe<CreateUserResponse>;
   deleteArticle: DeleteArticleResponse;
   deleteComment?: Maybe<DeleteCommentResponse>;
-  deleteLike: Scalars['Boolean']['output'];
   signIn?: Maybe<SignInResponse>;
   toggleLike: LikeToggleResponse;
-  unlikeArticle: Scalars['Boolean']['output'];
   updateArticle: UpdateArticleResponse;
   updateComment?: Maybe<UpdateCommentResponse>;
   updateUser: UpdateUserResponse;
@@ -149,11 +147,6 @@ export type MutationDeleteCommentArgs = {
 };
 
 
-export type MutationDeleteLikeArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
 export type MutationSignInArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -161,12 +154,6 @@ export type MutationSignInArgs = {
 
 
 export type MutationToggleLikeArgs = {
-  articleId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
-
-export type MutationUnlikeArticleArgs = {
   articleId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
 };
@@ -491,10 +478,8 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>;
   deleteArticle?: Resolver<ResolversTypes['DeleteArticleResponse'], ParentType, ContextType, RequireFields<MutationDeleteArticleArgs, 'articleId'>>;
   deleteComment?: Resolver<Maybe<ResolversTypes['DeleteCommentResponse']>, ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id'>>;
-  deleteLike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteLikeArgs, 'id'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SignInResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
   toggleLike?: Resolver<ResolversTypes['LikeToggleResponse'], ParentType, ContextType, RequireFields<MutationToggleLikeArgs, 'articleId' | 'userId'>>;
-  unlikeArticle?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUnlikeArticleArgs, 'articleId' | 'userId'>>;
   updateArticle?: Resolver<ResolversTypes['UpdateArticleResponse'], ParentType, ContextType, RequireFields<MutationUpdateArticleArgs, 'articleId'>>;
   updateComment?: Resolver<Maybe<ResolversTypes['UpdateCommentResponse']>, ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'content' | 'id'>>;
   updateUser?: Resolver<ResolversTypes['UpdateUserResponse'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id'>>;
