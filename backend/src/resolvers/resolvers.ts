@@ -61,6 +61,20 @@ export const resolvers: Resolvers = {
         console.log(comments);
         return comments;
       },
+      like: async (parent, _, { dataSources }) => {
+        const likes = await dataSources.db.like.findMany({
+          where: { articleId: parent.id },
+          select: {
+            id: true,
+            user: true,
+            createdAt: true,
+            articleId: true,
+            userId: true,
+          }
+        });
+        console.log(likes);
+        return likes;
+      }
     },
     Like: {
       user: async (parent, _, { dataSources }) => {
