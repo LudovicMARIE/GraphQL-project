@@ -6,13 +6,6 @@ export const typeDefs = gql`
     getAllArticles: [Article!]!
     getArticlesByUserId(userId: ID!): [Article!]!
     getArticleById(articleId: ID!): Article!
-    
-    likes: [Like!]!
-    like(id: ID!): Like
-    likesByArticle(articleId: ID!): [Like!]!
-    likesByUser(userId: ID!): [Like!]!
-    likeCount(articleId: ID!): Int!
-    hasUserLiked(userId: ID!, articleId: ID!): Boolean!
   }
 
   type Mutation{
