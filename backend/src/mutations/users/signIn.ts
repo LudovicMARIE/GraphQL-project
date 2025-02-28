@@ -31,7 +31,6 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
           message: `L'utilisateur ${email} | ${username} est connecté(e)`,
           user: user,
           token: userToken,
-          user: user,
         }
       } catch (error){
          return {
