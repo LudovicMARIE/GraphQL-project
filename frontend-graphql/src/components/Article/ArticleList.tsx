@@ -5,8 +5,11 @@ import { gql, useQuery } from "@apollo/client";
 import { ArticleInterface } from '../../Interfaces/Interfaces';
 import { FaHeart } from 'react-icons/fa'; 
 import '../../styles/articles-list.css';
+import {DeleteArticleButton} from './deleteArticle';
+import Button from '@mui/material/Button';
+import { graphql } from '../../gql/gql';
 
-const GET_ARTICLES_QUERY = gql`
+const GET_ARTICLES_QUERY = graphql(`
     query GetAllArticles {
       getAllArticles {
         author {
@@ -28,18 +31,21 @@ const GET_ARTICLES_QUERY = gql`
         }
       }
     }
-`;
+`);
 
 const ArticlesList = () => {
     const navigate = useNavigate();
     
-    const { loading, error, data } = useQuery(GET_ARTICLES_QUERY);
+  const { loading, error, data, refetch } = useQuery(GET_ARTICLES_QUERY);
     
     if (loading) return <p>Loading articles...</p>;
     if (error) return <p>Error loading articles: {error.message}</p>;
     
     return (
       <div className="articles-container">
+        <Button variant="contained" onClick={() => navigate("/create-article")}>
+          Créer un article
+        </Button>
         <h1>Timeline</h1>
         <div className="articles-list">
           {data.getAllArticles.map((article: ArticleInterface) => (

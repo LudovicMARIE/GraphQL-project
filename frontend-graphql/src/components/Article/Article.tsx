@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { ArticleData, ArticleInterface, CommentInterface } from '../../Interfaces/Interfaces';
 import { useParams } from 'react-router-dom';
+import { graphql } from '../../gql/gql';
 import { FaHeart } from 'react-icons/fa';
 import '../../styles/article.css';
 import { CREATE_COMMENT_MUTATION } from '../Comments/createComment';
@@ -10,7 +11,7 @@ import { UserInterface } from '../../Interfaces/Interfaces';
 import { UserInfo } from '../../context/UserContext';
 
 
-const GET_ARTICLE_BY_ID = gql`
+const GET_ARTICLE_BY_ID = graphql(`
   query GetArticleById($articleId: ID!) {
     getArticleById(articleId: $articleId) {
       author {
@@ -52,9 +53,7 @@ const GET_ARTICLE_BY_ID = gql`
       title
     }
   }
-`;
-
-
+`);
 
 interface ArticleProps {
   id: string;
