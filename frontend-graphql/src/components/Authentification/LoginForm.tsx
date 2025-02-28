@@ -1,6 +1,10 @@
-import { useContext, useRef } from 'react';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
+import { UserContext } from '../../Context/UserContext';
 import { gql, useMutation } from "@apollo/client";
 
 const SIGN_IN_MUTATION = gql`
@@ -14,82 +18,72 @@ const SIGN_IN_MUTATION = gql`
   }
 `;
 
-interface SignInResponse {
-  signIn: {
-    code: string;
-    success: boolean;
-    message: string;
-    token: string;
-  }
-}
-
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
-  
-  // Utiliser useRef au lieu de variables simples pour éviter les problèmes de typage
-  const inputEmailRef = useRef<HTMLInputElement>(null);
-  const inputPasswordRef = useRef<HTMLInputElement>(null);
-  
-  const [signIn, { data, loading, error }] = useMutation<SignInResponse>(SIGN_IN_MUTATION);
-
-  // Ces lignes vont empêcher le rendu du formulaire - il faut les déplacer
-  // if (loading) return "Submitting...";
-  // if (error) return `Submission error! ${error.message}`;
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    if (inputEmailRef.current && inputPasswordRef.current) {
-      try {
-        const { data } = await signIn({
-          variables: { 
-            email: inputEmailRef.current.value, 
-            password: inputPasswordRef.current.value 
-          },
-        });
-
-        // Traitement de la réponse
-        if (data?.signIn?.token) {
-          login(data.signIn); // Enregistre les données utilisateur
-          navigate("/articles", { replace: true });
-        }
-        
-        // Réinitialiser les champs
-        inputEmailRef.current.value = "";
-        inputPasswordRef.current.value = "";
-      } catch (err) {
-        // L'erreur sera capturée par Apollo et disponible via la variable error
-        console.error("Erreur de connexion :", err);
-      }
-    }
-  };
+  const [signIn, { loading }] = useMutation(SIGN_IN_MUTATION);
 
   return (
-    <>
-      {loading ? (
-        <div>Connexion en cours...</div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <input
-            ref={inputEmailRef}
-            type="email"
-            placeholder="Email"
-            required
-          />
-          <input
-            ref={inputPasswordRef}
-            type="password"
-            placeholder="Mot de passe"
-            required
-          />
-          {error && <p style={{ color: "red" }}>Erreur : {error.message}</p>}
-          <button type="submit" disabled={loading}>
-            {loading ? "Connexion..." : "Connexion"}
-          </button>
-        </form>
-      )}
-    </>
+    <div className="login-container">
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={Yup.object({
+          email: Yup.string().email('Email invalide').required('Requis'),
+          password: Yup.string().required('Requis'),
+        })}
+        onSubmit={async (values, { setSubmitting, setErrors }) => {
+          try {
+            const { data } = await signIn({
+              variables: {
+                email: values.email,
+                password: values.password,
+              },
+            });
+
+            if (data?.signIn?.token) {
+              login(data.signIn);
+              console.log("Token après connexion :", data?.signIn?.token);
+              navigate("/articles", { replace: true });
+            } else {
+              setErrors({ general: "Erreur lors de la connexion. Vérifiez vos identifiants." } as Record<string, string>);
+            }
+          } catch (err) {
+            if (err instanceof Error) {
+              console.error("Erreur d'inscription :", err.message);
+              setErrors({ general: err.message } as Record<string, string>);
+            }
+          }
+          setSubmitting(false);
+        }}
+      >
+        {({ isSubmitting, errors }) => (
+          <Form>
+            <div className="form-group">
+              <label htmlFor="email">Email :</label>
+              <Field className="form-control" type="email" name="email" placeholder="Email" required />
+              <ErrorMessage className="error-message" name="email" component="div" style={{ color: "red" }} />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Mot de passe :</label>
+              <Field className="form-control" type="password" name="password" placeholder="Mot de passe" required />
+              <ErrorMessage className="error-message" name="password" component="div" style={{color: "red"}} />
+            </div>
+
+            {errors.general && <p className="error-message" style={{ color: "red" }}>Erreur : {errors.general}</p>}
+
+            <div className="d-flex flex-column gap-3 align-items-center text-center">
+              <Button variant="contained" type="submit" disabled={isSubmitting || loading}>
+                {loading ? "Connexion..." : "Connexion"}
+              </Button>
+              <p className="footer-text">
+                Pas de compte ? Pas de problème ! <Link to="/register">Inscrivez-vous maintenant !</Link>
+              </p>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 

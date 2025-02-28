@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
@@ -70,16 +70,19 @@ const RegisterForm = () => {
       {({ isSubmitting }) => (
         <Form>
           <div className="form-group mb-3">
+            <label>Username :</label>
+            <Field className="form-control" type="text" name="username" placeholder="Username" />
+            <ErrorMessage className="error-message" name="username" component="div" style={{ color: "red" }} />
+          </div>
+          <div className="form-group mb-3">
             <label>Email :</label>
             <Field className="form-control" type="email" name="email" placeholder="Email" />
+            <ErrorMessage className="error-message" name="email" component="div" style={{ color: "red" }} />
           </div>
           <div className="form-group mb-3">
             <label>Mot de passe :</label>
             <Field className="form-control" type="password" name="password" placeholder="Mot de passe" />
-          </div>
-          <div className="form-group mb-3">
-            <label>Username :</label>
-            <Field className="form-control" type="text" name="username" placeholder="Username" />
+            <ErrorMessage className="error-message" name="password" component="div" style={{ color: "red" }} />
           </div>
           <div className="form-group mb-3">
             <label>Bio :</label>
