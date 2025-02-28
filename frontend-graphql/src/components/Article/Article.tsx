@@ -2,8 +2,9 @@ import React from 'react';
 import { gql, useQuery } from "@apollo/client";
 import { ArticleData, ArticleInterface, CommentInterface } from '../../Interfaces/Interfaces';
 import { useParams } from 'react-router-dom';
+import { graphql } from '../../gql/gql';
 
-const GET_ARTICLE_BY_ID = gql`
+const GET_ARTICLE_BY_ID = graphql(`
   query GetArticleById($articleId: ID!) {
     getArticleById(articleId: $articleId) {
       author {
@@ -45,7 +46,7 @@ const GET_ARTICLE_BY_ID = gql`
       title
     }
   }
-`;
+`);
 
 
 const Article: React.FC = () => {
@@ -75,12 +76,12 @@ const Article: React.FC = () => {
 
       <div className="article-meta">
         <div className="likes-section">
-          <h3>Likes ({article.like.length})</h3>
-          {article.like.length > 0 ? (
+          <h3>Likes ({article.like?.length ?? 0})</h3>
+          {(article.like?.length ?? 0) > 0 ? (
             <ul>
-              {article.like.map((like) => (
+              {article.like?.map((like) => (
                 <li key={like.id}>
-                  {like.user.username} liked this article on {new Date(like.createdAt).toLocaleDateString()}
+                  {like.user?.username} liked this article on {new Date(like.createdAt).toLocaleDateString()}
                 </li>
               ))}
             </ul>
@@ -90,10 +91,10 @@ const Article: React.FC = () => {
         </div>
 
         <div className="comments-section">
-          <h3>Comments ({article.comment.length})</h3>
-          {article.comment.length > 0 ? (
+          <h3>Comments ({article.comment?.length ?? 0})</h3>
+          {(article.comment?.length ?? 0) > 0 ? (
             <ul>
-              {article.comment.map((commentItem: CommentInterface) => (
+              {article.comment?.map((commentItem: CommentInterface) => (
                 <li key={commentItem.id} className="comment">
                   <p><strong>{commentItem.author.username}</strong> on {new Date(commentItem.createdAt).toLocaleDateString()}</p>
                   <p>{commentItem.content}</p>

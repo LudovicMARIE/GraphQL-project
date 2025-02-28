@@ -6,9 +6,10 @@ import { ArticleInterface } from '../../Interfaces/Interfaces';
 import Article from './Article';
 import {DeleteArticleButton} from './deleteArticle';
 import Button from '@mui/material/Button';
+import { graphql } from '../../gql/gql';
 
 
-const GET_ARTICLES_QUERY = gql`
+const GET_ARTICLES_QUERY = graphql(`
     query GetAllArticles {
       getAllArticles {
         author {
@@ -30,7 +31,7 @@ const GET_ARTICLES_QUERY = gql`
         }
       }
     }
-`;
+`);
 
 const ArticlesList = () => {
     const navigate = useNavigate();
@@ -54,12 +55,12 @@ const ArticlesList = () => {
             />
           ))} */}
             <div className="articles-list">
-              {data.getAllArticles.map((article:ArticleInterface) => (
+              {data?.getAllArticles.map((article:ArticleInterface) => (
                 <div key={article.id} className="article-card">
                   <h3>{article.title}</h3>
                   <p>{article.content.substring(0, 100)}...</p>
                   <p>Author: {article.author.username}</p>
-                  <p>Likes: {article.like.length}</p>
+                  <p>Likes: {article.like?.length ?? 0}</p>
                   <Link to={`/articles/${article.id}`}>
                     <button>More Details</button>
                   </Link>
