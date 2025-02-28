@@ -185,6 +185,7 @@ export type Query = {
   getAllArticles: Array<Article>;
   getArticleById: Article;
   getArticlesByUserId: Array<Article>;
+  getUserById: User;
 };
 
 
@@ -194,6 +195,11 @@ export type QueryGetArticleByIdArgs = {
 
 
 export type QueryGetArticlesByUserIdArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetUserByIdArgs = {
   userId: Scalars['ID']['input'];
 };
 
@@ -457,6 +463,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   getAllArticles?: Resolver<Array<ResolversTypes['Article']>, ParentType, ContextType>;
   getArticleById?: Resolver<ResolversTypes['Article'], ParentType, ContextType, RequireFields<QueryGetArticleByIdArgs, 'articleId'>>;
   getArticlesByUserId?: Resolver<Array<ResolversTypes['Article']>, ParentType, ContextType, RequireFields<QueryGetArticlesByUserIdArgs, 'userId'>>;
+  getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
 };
 
 export type SignInResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SignInResponse'] = ResolversParentTypes['SignInResponse']> = {

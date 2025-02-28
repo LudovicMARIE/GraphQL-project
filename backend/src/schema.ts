@@ -6,6 +6,7 @@ export const typeDefs = gql`
     getAllArticles: [Article!]!
     getArticlesByUserId(userId: ID!): [Article!]!
     getArticleById(articleId: ID!): Article!
+    getUserById(userId: ID!): User!
   }
 
   type Mutation{
