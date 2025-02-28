@@ -1,5 +1,4 @@
-// import { useRequireOfflineUser } from "../Utils/Security/AuthorizationHelper";
-import LoginForm from "../Components/Authentification/LoginForm";
+import LoginForm from "../components/Authentification/LoginForm";
 
 
 function Login() {

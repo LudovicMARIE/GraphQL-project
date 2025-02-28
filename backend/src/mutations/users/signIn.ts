@@ -23,7 +23,7 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
             throw new Error("Mot de passe invalide")
         }
             
-        console.log(user);
+        // console.log(user);
         const userToken: string = createJWT(user)
       
         return {

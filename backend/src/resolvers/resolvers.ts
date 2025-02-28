@@ -7,6 +7,7 @@ import { Resolvers } from "../types.js"
 import { createComment } from "../mutations/comments/createComment.js";
 import { updateUser } from "../mutations/users/updateUser.js";
 import { articleQueries } from "../mutations/articles/getArticles.js";
+import { userQueries } from "../mutations/users/getUsers.js";
 import { updateComment } from "../mutations/comments/updateComment.js";
 import { deleteComment } from "../mutations/comments/deleteComment.js";
 import { toggleLike } from "../mutations/likes/toggleLike.js";
@@ -14,6 +15,7 @@ import { toggleLike } from "../mutations/likes/toggleLike.js";
 export const resolvers: Resolvers = {
     Query: {
       ...articleQueries,
+      ...userQueries,
     },
     Mutation: {
       createUser,
@@ -58,7 +60,7 @@ export const resolvers: Resolvers = {
             updatedAt: true,
           }
         });
-        console.log(comments);
+        // console.log(comments);
         return comments;
       },
       like: async (parent, _, { dataSources }) => {
@@ -72,7 +74,7 @@ export const resolvers: Resolvers = {
             userId: true,
           }
         });
-        console.log(likes);
+        // console.log(likes);
         return likes;
       }
     },
