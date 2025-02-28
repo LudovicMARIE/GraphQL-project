@@ -6,6 +6,13 @@ GraphQL Social Media est une plateforme de réseau social complète permettant a
 
 Ce réseau social implémente toutes les fonctionnalités essentielles: authentification sécurisée, gestion de contenu, interactions entre utilisateurs.
 
+.env back 
+# JWT
+JWT_SECRET=ezlfjQERGergzERGrg
+JWT_EXPIRES_IN=604800
+# Serveur
+PORT=4000
+
 
 # 🚀 Backend
 
