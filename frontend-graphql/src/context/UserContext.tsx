@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 
 // Définition d'une interface pour les informations utilisateur
 interface UserInfo {
-  id?: string ;
+  id?: string;
   username?: string;
   email?: string;
   bio?: string | null | undefined;
@@ -12,7 +12,7 @@ interface UserInfo {
 // Interface pour le contexte
 interface UserContextType {
   login: (loginInfos: UserInfo) => void;
-  getUserInfos: () => UserInfo | string | null;
+  getUserInfos: () => UserInfo | null;
   logout: () => void;
   register: (registerInfos: UserInfo) => void;
 }
@@ -35,11 +35,11 @@ const UserProvider = ({ children }: UserProviderProps) => {
     try {
       return storedUser && storedUser !== "undefined" ? JSON.parse(storedUser) : null;
     } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
+      console.error("Erreur lors de la récupération de l'utilisateur", error);
       return null;
     }
   });
-  
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser && storedUser !== "undefined") {
@@ -62,17 +62,8 @@ const UserProvider = ({ children }: UserProviderProps) => {
     console.log("Nouvel utilisateur enregistré : ", registerInfos);
   };
 
-  const getUserInfos = (): UserInfo | string | null => {
-    if (user) {
-      return user;
-    } else {
-      const storeUser = localStorage.getItem("user");
-      if (storeUser && storeUser !== "undefined") {
-        // setUser(JSON.parse(storeUser));
-        return storeUser;
-      }
-      return null;
-    }
+  const getUserInfos = (): UserInfo | null => {
+    return user || null;
   };
 
   return <UserContext.Provider value={{ login, getUserInfos, logout, register }}>{children}</UserContext.Provider>;
