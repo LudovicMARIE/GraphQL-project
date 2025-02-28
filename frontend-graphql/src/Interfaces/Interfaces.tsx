@@ -2,17 +2,17 @@ export interface UserInterface {
     id: string;
     email: string;
     username: string;
-    bio: string;
+    bio?: string | null;
 }
 
 export interface ArticleData {
     getArticleById: {
       author: UserInterface;
       authorId: string;
-      comment: CommentInterface[];
+      comment?: CommentInterface[] | null;
       content: string;
       id: string;
-      like: LikeInterface[];
+      like?: LikeInterface[] | null;
       published: boolean;
       title: string;
     }
@@ -22,10 +22,10 @@ export interface ArticleData {
 export interface ArticleInterface {
       author: UserInterface;
       authorId: string;
-      comment: CommentInterface[];
+      comment?: CommentInterface[] | null;
       content: string;
       id: string;
-      like: LikeInterface[];
+      like?: LikeInterface[] | null;
       published: boolean;
       title: string;
   }
@@ -41,7 +41,7 @@ export interface ArticleInterface {
   }
   
   export interface LikeInterface {
-    user: UserInterface
+    user?: UserInterface
     id: string;
     createdAt: string;
     articleId: string;

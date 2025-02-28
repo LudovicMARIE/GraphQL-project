@@ -2,15 +2,16 @@ import { gql, useMutation } from "@apollo/client";
 import { Button } from "@mui/material";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import { graphql } from "../../gql/gql";
 
-const DELETE_ARTICLE = gql`
+const DELETE_ARTICLE = graphql(`
   mutation DeleteArticle($articleId: ID!) {
     deleteArticle(articleId: $articleId) {
       success
       message
     }
   }
-`;
+`);
 
 interface DeleteArticleButtonProps {
   articleId: string;
@@ -42,8 +43,10 @@ export const DeleteArticleButton: React.FC<DeleteArticleButtonProps> = ({ articl
         alert(data?.deleteArticle?.message || "Erreur lors de la suppression.");
       }
     } catch (err) {
-      console.error("Erreur lors de la suppression :", err.message);
-      alert("Erreur lors de la suppression. Veuillez réessayer.");
+      if (err instanceof Error) {
+        console.error("Erreur lors de la suppression", err.message);
+        alert("Erreur lors de la suppression. Veuillez réessayer.");
+      }
     }
   };
 

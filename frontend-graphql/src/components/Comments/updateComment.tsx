@@ -1,20 +1,24 @@
 import { gql, useMutation } from "@apollo/client";
+import { graphql } from "../../gql/gql";
 
 
-const UPDATE_COMMENT_MUTATION = gql`
-  mutation UpdateComment($authorId: ID!, $articleId: ID!, $content: String!) {
-  UpdateComment(authorId: $authorId, articleId: $articleId, content: $content) {
+const UPDATE_COMMENT_MUTATION = graphql(`
+  mutation UpdateComment($updateCommentId: ID!, $content: String!) {
+  updateComment(id: $updateCommentId, content: $content) {
     code
     success
     message
     comment {
       id
       content
+      authorId
+      articleId
       createdAt
+      updatedAt
     }
   }
 }
-`;
+`);
 
 interface UpdateCommentResponse {
   updateComment: {

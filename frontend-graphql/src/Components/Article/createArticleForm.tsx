@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
+import { graphql } from "../../gql/gql";
 
-const CREATE_ARTICLE = gql`
+
+const CREATE_ARTICLE = graphql(`
   mutation CreateArticle($title: String!, $content: String!) {
     createArticle(title: $title, content: $content) {
       code
@@ -27,7 +29,7 @@ const CREATE_ARTICLE = gql`
       }
     }
   }
-`
+`)
 
 export const CreateArticleForm = () => {
   const navigate = useNavigate();
