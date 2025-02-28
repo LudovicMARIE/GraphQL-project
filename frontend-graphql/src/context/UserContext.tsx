@@ -11,9 +11,8 @@ interface UserInfo {
 
 // Interface du contexte
 interface UserContextType {
-  user: UserInfo | null;
-  login: (userInfo: UserInfo) => void;
-  getUserInfos: () => UserInfo | null;
+  login: (loginInfos: UserInfo) => void;
+  getUserInfos: () => UserInfo | string | null;
   logout: () => void;
   register: (userInfo: UserInfo) => void;
 }
@@ -37,12 +36,11 @@ const UserProvider = ({ children }: UserProviderProps) => {
       const storedUser = localStorage.getItem("user");
       return storedUser ? JSON.parse(storedUser) : null;
     } catch (error) {
-      console.error("Erreur lors de la récupération de l'uttilisateur depuis le localstorage", error);
+      console.error("Failed to parse user from localStorage", error);
       return null;
     }
   });
-
-  // Effet pour recharger l'utilisateur au montage (uniquement si nécessaire)
+  
   useEffect(() => {
     if (!user) {
       const storedUser = localStorage.getItem("user");
@@ -71,23 +69,24 @@ const UserProvider = ({ children }: UserProviderProps) => {
     window.location.href = "/"; // Redirige vers l'accueil
   };
 
-  const register = (userInfo: UserInfo): void => {
-    setUser(userInfo);
-    localStorage.setItem("user", JSON.stringify(userInfo));
-    if (userInfo.token) {
-      sessionStorage.setItem("token", userInfo.token);
+  const register = (registerInfos: UserInfo): void => {
+    console.log("Nouvel utilisateur enregistré : ", registerInfos);
+  };
+
+  const getUserInfos = (): UserInfo | string | null => {
+    if (user) {
+      return user;
+    } else {
+      const storeUser = localStorage.getItem("user");
+      if (storeUser && storeUser !== "undefined") {
+        // setUser(JSON.parse(storeUser));
+        return storeUser;
+      }
+      return null;
     }
   };
 
-  const getUserInfos = (): UserInfo | null => {
-    return user;
-  };
-
-  return (
-    <UserContext.Provider value={{ user, login, getUserInfos, logout, register }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ login, getUserInfos, logout, register }}>{children}</UserContext.Provider>;
 };
 
 export { UserProvider };
