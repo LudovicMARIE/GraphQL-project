@@ -52,7 +52,7 @@ const LoginForm = () => {
         // Traitement de la réponse
         if (data?.signIn?.token) {
           login(data.signIn); // Enregistre les données utilisateur
-          navigate("/", { replace: true });
+          navigate("/articles", { replace: true });
         }
         
         // Réinitialiser les champs
