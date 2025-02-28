@@ -47,12 +47,8 @@ const GET_ARTICLE_BY_ID = gql`
   }
 `;
 
-interface ArticleProps {
-  id: string;
-}
 
-
-const Article: React.FC<ArticleProps> = () => {
+const Article: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     console.log('articleId from URL:', id);
   const { loading, error, data } = useQuery<ArticleData>(GET_ARTICLE_BY_ID, {

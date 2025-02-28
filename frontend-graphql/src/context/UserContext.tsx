@@ -11,8 +11,9 @@ interface UserInfo {
 
 // Interface du contexte
 interface UserContextType {
-  login: (loginInfos: UserInfo) => void;
-  getUserInfos: () => UserInfo | string | null;
+  user: UserInfo | null;
+  login: (userInfo: UserInfo) => void;
+  getUserInfos: () => UserInfo | null;
   logout: () => void;
   register: (userInfo: UserInfo) => void;
 }
@@ -40,7 +41,8 @@ const UserProvider = ({ children }: UserProviderProps) => {
       return null;
     }
   });
-  
+
+  // Effet pour recharger l'utilisateur au montage (uniquement si nécessaire)
   useEffect(() => {
     if (!user) {
       const storedUser = localStorage.getItem("user");
@@ -65,28 +67,28 @@ const UserProvider = ({ children }: UserProviderProps) => {
   const logout = (): void => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     sessionStorage.removeItem("token"); // Supprime aussi le token
     window.location.href = "/"; // Redirige vers l'accueil
   };
 
-  const register = (registerInfos: UserInfo): void => {
-    console.log("Nouvel utilisateur enregistré : ", registerInfos);
-  };
-
-  const getUserInfos = (): UserInfo | string | null => {
-    if (user) {
-      return user;
-    } else {
-      const storeUser = localStorage.getItem("user");
-      if (storeUser && storeUser !== "undefined") {
-        // setUser(JSON.parse(storeUser));
-        return storeUser;
-      }
-      return null;
+  const register = (userInfo: UserInfo): void => {
+    setUser(userInfo);
+    localStorage.setItem("user", JSON.stringify(userInfo));
+    if (userInfo.token) {
+      sessionStorage.setItem("token", userInfo.token);
     }
   };
 
-  return <UserContext.Provider value={{ login, getUserInfos, logout, register }}>{children}</UserContext.Provider>;
+  const getUserInfos = (): UserInfo | null => {
+    return user;
+  };
+
+  return (
+    <UserContext.Provider value={{ user, login, getUserInfos, logout, register }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export { UserProvider };

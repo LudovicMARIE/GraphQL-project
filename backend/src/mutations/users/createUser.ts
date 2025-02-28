@@ -23,8 +23,8 @@ export const createUser: MutationResolvers['createUser'] = async (_, {email, pas
     return {
       code: 400,
       success: false,
-      message: "Erreur lors de la création de l\'utilisateur",
-      // message: (e as Error).message,
+      // message: "Erreur lors de la création de l\'utilisateur",
+      message: (e as Error).message,
       user: null,
     }
   }
