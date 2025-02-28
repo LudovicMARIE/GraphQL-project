@@ -1,4 +1,4 @@
-import { CreateArticleForm } from "../components/Articles/createArticleForm";
+import { CreateArticleForm } from "../Components/Article/createArticleForm";
 
 function CreateArticle() {
   return (
