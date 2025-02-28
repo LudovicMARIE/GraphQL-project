@@ -6,8 +6,9 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 import { gql, useMutation } from "@apollo/client";
+import { graphql } from '../../gql/gql';
 
-const SIGN_IN_MUTATION = gql`
+const SIGN_IN_MUTATION = graphql(`
   mutation SignIn($email: String!, $password: String!) {
     signIn(email: $email, password: $password) {
       code
@@ -16,7 +17,7 @@ const SIGN_IN_MUTATION = gql`
       token
     }
   }
-`;
+`);
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ const LoginForm = () => {
               <ErrorMessage className="error-message" name="password" component="div" style={{color: "red"}} />
             </div>
 
-            {errors.general && <p className="error-message" style={{ color: "red" }}>Erreur : {errors.general}</p>}
+            {errors.general && <p className="error-message" style={{ color: "red" }}>{errors.general}</p>}
 
             <div className="d-flex flex-column gap-3 align-items-center text-center">
               <Button variant="contained" type="submit" disabled={isSubmitting || loading}>

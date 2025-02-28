@@ -6,8 +6,9 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { gql, useMutation } from "@apollo/client";
 import { User } from '../../gql/graphql';
+import { graphql } from '../../gql/gql';
 
-const CREATE_USER_MUTATION = gql`
+const CREATE_USER_MUTATION = graphql(`
   mutation createUser($email: String!, $password: String!, $username: String!, $bio: String) {
     createUser(email: $email, password: $password, username: $username, bio: $bio) {
       code
@@ -21,7 +22,7 @@ const CREATE_USER_MUTATION = gql`
       }
     }
   }
-`;
+`);
 
 interface createUserResponse {
   createUser: {
@@ -62,7 +63,9 @@ const RegisterForm = () => {
             resetForm();
           }
         } catch (err) {
-          console.error("Erreur d'inscription :", err);
+          if (err instanceof Error) {
+            console.error("Erreur d'inscription :", err);
+          }
         }
         setSubmitting(false);
       }}
