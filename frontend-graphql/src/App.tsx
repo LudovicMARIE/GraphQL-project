@@ -5,6 +5,8 @@ import Register from './Pages/Register'
 import Login from "./Pages/Login"
 import ArticlelistPage from './Pages/ArticleListPage'
 import Article from './components/Article/Article'
+import CreateArticle from "./Pages/createArticle"
+
 
 function App() {
 
@@ -20,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/articles" element={<ArticlelistPage />} />
           <Route path="/articles/:id" element={<Article />} />
+          <Route path="/create-article" element={<CreateArticle />} />
         </Routes>
       </div>
     </>
