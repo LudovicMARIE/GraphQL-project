@@ -18,7 +18,6 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
         let isPasswordValid: boolean = await comparePasswords(password, user.password)
         let username: string = user.username
 
-        
         if(!isPasswordValid){
             throw new Error("Mot de passe invalide")
         }
@@ -32,12 +31,13 @@ export const signIn: MutationResolvers['signIn'] = async  (_, {email, password},
           message: `L'utilisateur ${email} | ${username} est connecté(e)`,
           user: user,
           token: userToken,
+          user: user,
         }
       } catch (error){
          return {
           code: 400,
-          message: "Erreur lors de la connexion de l\'utilisateur",
-          // message: (e as Error).message,
+          // message: "Erreur lors de la connexion de l\'utilisateur",
+          message: (error as Error).message,
           success: false,
           token: ""
         }

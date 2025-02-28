@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../Context/UserContext';
+import { UserContext } from '../../context/UserContext';
 import { gql, useMutation } from "@apollo/client";
 import { graphql } from '../../gql/gql';
 
