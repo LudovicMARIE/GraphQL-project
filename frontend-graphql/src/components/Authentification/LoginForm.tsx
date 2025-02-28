@@ -2,6 +2,7 @@ import { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import { gql, useMutation } from "@apollo/client";
+import { User } from '../../gql/graphql';
 
 const SIGN_IN_MUTATION = gql`
   mutation SignIn($email: String!, $password: String!) {
@@ -10,6 +11,12 @@ const SIGN_IN_MUTATION = gql`
       success
       message
       token
+      user {
+        id
+        email
+        username
+        bio
+      }
     }
   }
 `;
@@ -20,6 +27,8 @@ interface SignInResponse {
     success: boolean;
     message: string;
     token: string;
+    user: User
+    userId: string;
   }
 }
 
@@ -52,6 +61,10 @@ const LoginForm = () => {
         // Traitement de la réponse
         if (data?.signIn?.token) {
           login(data.signIn); // Enregistre les données utilisateur
+          console.log("data")
+          console.log(data);
+          localStorage.setItem('userId', data?.signIn.user.id ?? "")
+          
           navigate("/articles", { replace: true });
         }
         

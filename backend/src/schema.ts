@@ -105,6 +105,7 @@ export const typeDefs = gql`
     code: Int!
     success: Boolean!
     message: String!
+    user: User
     token: String!
   }
 

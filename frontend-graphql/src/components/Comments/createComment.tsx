@@ -4,7 +4,7 @@ import { UserContext } from '../../context/UserContext';
 import { gql, useMutation } from "@apollo/client";
 import { Comment } from '../../gql/graphql';
 
-const CREATE_COMMENT_MUTATION = gql`
+export const CREATE_COMMENT_MUTATION = gql`
   mutation CreateComment($authorId: ID!, $articleId: ID!, $content: String!) {
   createComment(authorId: $authorId, articleId: $articleId, content: $content) {
     code

@@ -1,7 +1,14 @@
-import React from 'react';
-import { gql, useQuery } from "@apollo/client";
+import React, { useState } from 'react';
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { ArticleData, ArticleInterface, CommentInterface } from '../../Interfaces/Interfaces';
 import { useParams } from 'react-router-dom';
+import { FaHeart } from 'react-icons/fa';
+import '../../styles/article.css';
+import { CREATE_COMMENT_MUTATION } from '../Comments/createComment';
+import { useNavigate } from 'react-router-dom';
+import { UserInterface } from '../../Interfaces/Interfaces';
+import { UserInfo } from '../../context/UserContext';
+
 
 const GET_ARTICLE_BY_ID = gql`
   query GetArticleById($articleId: ID!) {
@@ -47,6 +54,8 @@ const GET_ARTICLE_BY_ID = gql`
   }
 `;
 
+
+
 interface ArticleProps {
   id: string;
 }
@@ -55,6 +64,36 @@ interface ArticleProps {
 const Article: React.FC<ArticleProps> = () => {
     const { id } = useParams<{ id: string }>();
     console.log('articleId from URL:', id);
+
+    const [commentText, setCommentText] = useState('');
+    const [createComment] = useMutation(CREATE_COMMENT_MUTATION);
+    const navigate = useNavigate();
+
+
+
+
+  const sendComment = async () => {
+    try {
+        const { data } = await createComment({
+          variables: {
+            authorId: localStorage.getItem("userId"),
+            articleId: id,
+            content: commentText
+          }
+        });
+  
+        if (data.createComment.success) {
+          console.log("Comment created successfully:", data.createComment.comment);
+          setCommentText('');
+          navigate(0);
+        } else {
+          console.error("Failed to create comment:", data.createComment.message);
+        }
+      } catch (error) {
+        console.error("Error creating comment:", error);
+      }
+  };
+
   const { loading, error, data } = useQuery<ArticleData>(GET_ARTICLE_BY_ID, {
     variables: { articleId: id }
   });
@@ -66,57 +105,48 @@ const Article: React.FC<ArticleProps> = () => {
   const article: ArticleInterface = data.getArticleById;
 
   return (
-    <div className="article-container">
-      <div className="article-header">
-        <h1>{article.title}</h1>
-        <p>By: {article.author.username}</p>
-        <p>Status: {article.published ? 'Published' : 'Draft'}</p>
-      </div>
-
-      <div className="article-content">
-        <p>{article.content}</p>
-      </div>
-
-      <div className="article-meta">
-        <div className="likes-section">
-          <h3>Likes ({article.like.length})</h3>
-          {article.like.length > 0 ? (
-            <ul>
-              {article.like.map((like) => (
-                <li key={like.id}>
-                  {like.user.username} liked this article on {new Date(like.createdAt).toLocaleDateString()}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No likes yet</p>
-          )}
-        </div>
-
-        <div className="comments-section">
-          <h3>Comments ({article.comment.length})</h3>
-          {article.comment.length > 0 ? (
-            <ul>
-              {article.comment.map((commentItem: CommentInterface) => (
-                <li key={commentItem.id} className="comment">
-                  <p><strong>{commentItem.author.username}</strong> on {new Date(commentItem.createdAt).toLocaleDateString()}</p>
-                  <p>{commentItem.content}</p>
-                  <p className="comment-meta">Last updated: {new Date(commentItem.updatedAt).toLocaleDateString()}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No comments yet</p>
-          )}
+    <div className="article-detail-container">
+      <div className="article-content-box">
+        <h1 className="article-title">{article.title}</h1>
+        <p className="article-content">{article.content}</p>
+        <div className="article-meta">
+          <span className="article-likes">
+            <FaHeart /> {article.like.length}
+          </span>
+          <span className="article-author">@{article.author.username}</span>
         </div>
       </div>
 
-      <div className="article-debug">
-        <h4>Article Debug Information</h4>
-        <p>Article ID: {article.id}</p>
-        <p>Author ID: {article.authorId}</p>
-        <p>Author Email: {article.author.email}</p>
-        <p>Author Bio: {article.author.bio}</p>
+      <div className="comment-box">
+        <textarea
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          placeholder="Write a comment..."
+        />
+        <button onClick={sendComment}>Send Comment</button>
+      </div>
+
+      <div className="comments-section">
+        <h3>Comments ({article.comment.length})</h3>
+        {article.comment.length > 0 ? (
+          <ul className="comment-list">
+            {article.comment.map((commentItem) => (
+              <li key={commentItem.id} className="comment">
+                <p className="comment-author">{commentItem.author.username}</p>
+                <p className="comment-content">{commentItem.content}</p>
+                <p className="comment-date">
+                  {new Date(commentItem.createdAt).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                  })}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No comments yet</p>
+        )}
       </div>
     </div>
   );

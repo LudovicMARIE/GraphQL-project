@@ -1,72 +1,94 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 
-// Définition d'une interface pour les informations utilisateur
+// Interface utilisateur
 interface UserInfo {
   id?: string;
   username?: string;
   email?: string;
-  bio?: string | null | undefined;
+  bio?: string | null;
   token?: string;
 }
 
-// Interface pour le contexte
+// Interface du contexte
 interface UserContextType {
-  login: (loginInfos: UserInfo) => void;
+  user: UserInfo | null;
+  login: (userInfo: UserInfo) => void;
   getUserInfos: () => UserInfo | null;
   logout: () => void;
-  register: (registerInfos: UserInfo) => void;
+  register: (userInfo: UserInfo) => void;
 }
 
 interface UserProviderProps {
   children: ReactNode;
 }
 
-// Création du contexte avec une valeur par défaut complète
+// Création du contexte avec des valeurs par défaut
 export const UserContext = createContext<UserContextType>({
+  user: null,
   login: () => {},
   getUserInfos: () => null,
   logout: () => {},
-  register: () => {}
+  register: () => {},
 });
 
 const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<UserInfo | null>(() => {
-    const storedUser = localStorage.getItem("user");
     try {
-      return storedUser && storedUser !== "undefined" ? JSON.parse(storedUser) : null;
+      const storedUser = localStorage.getItem("user");
+      return storedUser ? JSON.parse(storedUser) : null;
     } catch (error) {
-      console.error("Erreur lors de la récupération de l'utilisateur", error);
+      console.error("Failed to parse user from localStorage", error);
       return null;
     }
   });
 
+  // Effet pour recharger l'utilisateur au montage (uniquement si nécessaire)
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser && storedUser !== "undefined") {
-      setUser(JSON.parse(storedUser));
+    if (!user) {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (error) {
+          console.error("Erreur de parsing du localStorage:", error);
+        }
+      }
     }
-  }, []);
+  }, [user]);
 
-  const login = (loginInfos: UserInfo): void => {
-    setUser(loginInfos);
-    localStorage.setItem('user', JSON.stringify(loginInfos));
+  const login = (userInfo: UserInfo): void => {
+    setUser(userInfo);
+    localStorage.setItem("user", JSON.stringify(userInfo));
+    if (userInfo.token) {
+      sessionStorage.setItem("token", userInfo.token); // Stocke le token séparément
+    }
   };
 
   const logout = (): void => {
     setUser(null);
-    localStorage.removeItem('user');
-    window.location.href = '/';
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token"); // Supprime aussi le token
+    window.location.href = "/"; // Redirige vers l'accueil
   };
 
-  const register = (registerInfos: UserInfo): void => {
-    console.log("Nouvel utilisateur enregistré : ", registerInfos);
+  const register = (userInfo: UserInfo): void => {
+    setUser(userInfo);
+    localStorage.setItem("user", JSON.stringify(userInfo));
+    if (userInfo.token) {
+      sessionStorage.setItem("token", userInfo.token);
+    }
   };
 
   const getUserInfos = (): UserInfo | null => {
-    return user || null;
+    return user;
   };
 
-  return <UserContext.Provider value={{ login, getUserInfos, logout, register }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, login, getUserInfos, logout, register }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export { UserProvider };

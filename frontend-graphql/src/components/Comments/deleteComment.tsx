@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 
 
-const DELETE_COMMENT_MUTATION = gql`
+export const DELETE_COMMENT_MUTATION = gql`
   mutation DeleteComment($deleteCommentId: ID!) {
   deleteComment(id: $deleteCommentId) {
     code
