@@ -209,6 +209,7 @@ export type SignInResponse = {
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
   token: Scalars['String']['output'];
+  user?: Maybe<User>;
 };
 
 export type UpdateArticleResponse = {
@@ -329,7 +330,7 @@ export type ResolversTypes = {
   LikeToggleResponse: ResolverTypeWrapper<Omit<LikeToggleResponse, 'like'> & { like?: Maybe<ResolversTypes['Like']> }>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
-  SignInResponse: ResolverTypeWrapper<SignInResponse>;
+  SignInResponse: ResolverTypeWrapper<Omit<SignInResponse, 'user'> & { user?: Maybe<ResolversTypes['User']> }>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateArticleResponse: ResolverTypeWrapper<Omit<UpdateArticleResponse, 'article'> & { article?: Maybe<ResolversTypes['Article']> }>;
   UpdateCommentResponse: ResolverTypeWrapper<Omit<UpdateCommentResponse, 'comment'> & { comment?: Maybe<ResolversTypes['Comment']> }>;
@@ -354,7 +355,7 @@ export type ResolversParentTypes = {
   LikeToggleResponse: Omit<LikeToggleResponse, 'like'> & { like?: Maybe<ResolversParentTypes['Like']> };
   Mutation: {};
   Query: {};
-  SignInResponse: SignInResponse;
+  SignInResponse: Omit<SignInResponse, 'user'> & { user?: Maybe<ResolversParentTypes['User']> };
   String: Scalars['String']['output'];
   UpdateArticleResponse: Omit<UpdateArticleResponse, 'article'> & { article?: Maybe<ResolversParentTypes['Article']> };
   UpdateCommentResponse: Omit<UpdateCommentResponse, 'comment'> & { comment?: Maybe<ResolversParentTypes['Comment']> };
@@ -471,6 +472,7 @@ export type SignInResponseResolvers<ContextType = Context, ParentType extends Re
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
