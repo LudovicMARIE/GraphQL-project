@@ -48,14 +48,14 @@ const ArticlesList = () => {
         </Button>
         <h1>Timeline</h1>
         <div className="articles-list">
-          {data.getAllArticles.map((article: ArticleInterface) => (
+          {data?.getAllArticles.map((article: ArticleInterface) => (
             <div key={article.id} className="article-card">
               <h3 className="article-title">{article.title}</h3>
               <p className="article-content">{article.content.substring(0, 100)}...</p>
               <p className="article-author">@{article.author.username}</p>
               <div className="article-footer">
                 <span className="article-likes">
-                  <FaHeart /> {article.like.length}
+                  <FaHeart /> {article.like?.length}
                 </span>
                 <Link to={`/articles/${article.id}`} className="more-details-link">
                   More Details

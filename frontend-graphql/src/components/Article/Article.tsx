@@ -110,7 +110,7 @@ const Article: React.FC<ArticleProps> = () => {
         <p className="article-content">{article.content}</p>
         <div className="article-meta">
           <span className="article-likes">
-            <FaHeart /> {article.like.length}
+            <FaHeart /> {article.like?.length}
           </span>
           <span className="article-author">@{article.author.username}</span>
         </div>
@@ -126,10 +126,10 @@ const Article: React.FC<ArticleProps> = () => {
       </div>
 
       <div className="comments-section">
-        <h3>Comments ({article.comment.length})</h3>
-        {article.comment.length > 0 ? (
+        <h3>Comments ({article.comment?.length ?? 0})</h3>
+        {(article.comment?.length ?? 0 ) > 0 ? (
           <ul className="comment-list">
-            {article.comment.map((commentItem) => (
+            {article.comment?.map((commentItem) => (
               <li key={commentItem.id} className="comment">
                 <p className="comment-author">{commentItem.author.username}</p>
                 <p className="comment-content">{commentItem.content}</p>
