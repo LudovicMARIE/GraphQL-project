@@ -15,6 +15,12 @@ const SIGN_IN_MUTATION = graphql(`
       success
       message
       token
+      user {
+        id
+        email
+        username
+        bio
+      }
     }
   }
 `);
@@ -44,6 +50,10 @@ const LoginForm = () => {
             if (data?.signIn?.token) {
               login(data.signIn);
               console.log("Token après connexion :", data?.signIn?.token);
+          console.log("data")
+          console.log(data);
+          localStorage.setItem('userId', data?.signIn.user.id ?? "")
+          
               navigate("/articles", { replace: true });
             } else {
               setErrors({ general: "Erreur lors de la connexion. Vérifiez vos identifiants." } as Record<string, string>);

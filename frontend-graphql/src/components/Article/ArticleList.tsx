@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import { gql, useQuery } from "@apollo/client";
 import { ArticleInterface } from '../../Interfaces/Interfaces';
-import Article from './Article';
+import { FaHeart } from 'react-icons/fa'; 
+import '../../styles/articles-list.css';
 import {DeleteArticleButton} from './deleteArticle';
 import Button from '@mui/material/Button';
 import { graphql } from '../../gql/gql';
-
 
 const GET_ARTICLES_QUERY = graphql(`
     query GetAllArticles {
@@ -43,37 +43,28 @@ const ArticlesList = () => {
     
     return (
       <div className="articles-container">
-        <h1>Articles</h1>
         <Button variant="contained" onClick={() => navigate("/create-article")}>
           Créer un article
         </Button>
+        <h1>Timeline</h1>
         <div className="articles-list">
-          {/* {data.getAllArticles.map((article: ArticleInterface) => (
-            <Article 
-              key={article.id}
-              id={article.id}
-            />
-          ))} */}
-            <div className="articles-list">
-              {data?.getAllArticles.map((article:ArticleInterface) => (
-                <div key={article.id} className="article-card">
-                  <h3>{article.title}</h3>
-                  <p>{article.content.substring(0, 100)}...</p>
-                  <p>Author: {article.author.username}</p>
-                  <p>Likes: {article.like?.length ?? 0}</p>
-                  <Link to={`/articles/${article.id}`}>
-                    <button>More Details</button>
-                  </Link>
-                  {article.id}
-                  <DeleteArticleButton articleId={article.id} refetch={refetch} />
-                </div>
-              ))}
+          {data?.getAllArticles.map((article: ArticleInterface) => (
+            <div key={article.id} className="article-card">
+              <h3 className="article-title">{article.title}</h3>
+              <p className="article-content">{article.content.substring(0, 100)}...</p>
+              <p className="article-author">@{article.author.username}</p>
+              <div className="article-footer">
+                <span className="article-likes">
+                  <FaHeart /> {article.like?.length}
+                </span>
+                <Link to={`/articles/${article.id}`} className="more-details-link">
+                  More Details
+                </Link>
+              </div>
             </div>
-
-
+          ))}
         </div>
       </div>
-      
     );
   };
 

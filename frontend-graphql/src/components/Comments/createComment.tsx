@@ -5,7 +5,7 @@ import { gql, useMutation } from "@apollo/client";
 import { Comment } from '../../gql/graphql';
 import { graphql } from '../../gql/gql';
 
-const CREATE_COMMENT_MUTATION = graphql(`
+export const CREATE_COMMENT_MUTATION = graphql(`
   mutation CreateComment($authorId: ID!, $articleId: ID!, $content: String!) {
     createComment(authorId: $authorId, articleId: $articleId, content: $content) {
       code
