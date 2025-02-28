@@ -15,12 +15,12 @@ export const typeDefs = gql`
       password: String!
       username: String!
       bio: String
-    ): CreateUserResponse
+    ): CreateUserResponse!
     
     signIn(
       email: String!
       password: String!
-    ): SignInResponse
+    ): SignInResponse!
     
     updateUser(
       id: ID!, 
@@ -50,16 +50,16 @@ export const typeDefs = gql`
       authorId: ID!
       articleId: ID!
       content: String!
-    ): CreateCommentResponse
+    ): CreateCommentResponse!
 
     updateComment(
       id: ID!
       content: String!
-    ): UpdateCommentResponse
+    ): UpdateCommentResponse!
 
     deleteComment(
       id: ID!
-    ): DeleteCommentResponse
+    ): DeleteCommentResponse!
 
     toggleLike(
       userId: ID!, 

@@ -103,14 +103,14 @@ export type LikeToggleResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createArticle: CreateArticleResponse;
-  createComment?: Maybe<CreateCommentResponse>;
-  createUser?: Maybe<CreateUserResponse>;
+  createComment: CreateCommentResponse;
+  createUser: CreateUserResponse;
   deleteArticle: DeleteArticleResponse;
-  deleteComment?: Maybe<DeleteCommentResponse>;
-  signIn?: Maybe<SignInResponse>;
+  deleteComment: DeleteCommentResponse;
+  signIn: SignInResponse;
   toggleLike: LikeToggleResponse;
   updateArticle: UpdateArticleResponse;
-  updateComment?: Maybe<UpdateCommentResponse>;
+  updateComment: UpdateCommentResponse;
   updateUser: UpdateUserResponse;
 };
 
@@ -448,14 +448,14 @@ export type LikeToggleResponseResolvers<ContextType = Context, ParentType extend
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createArticle?: Resolver<ResolversTypes['CreateArticleResponse'], ParentType, ContextType, RequireFields<MutationCreateArticleArgs, 'content' | 'title'>>;
-  createComment?: Resolver<Maybe<ResolversTypes['CreateCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'articleId' | 'authorId' | 'content'>>;
-  createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>;
+  createComment?: Resolver<ResolversTypes['CreateCommentResponse'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'articleId' | 'authorId' | 'content'>>;
+  createUser?: Resolver<ResolversTypes['CreateUserResponse'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>;
   deleteArticle?: Resolver<ResolversTypes['DeleteArticleResponse'], ParentType, ContextType, RequireFields<MutationDeleteArticleArgs, 'articleId'>>;
-  deleteComment?: Resolver<Maybe<ResolversTypes['DeleteCommentResponse']>, ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id'>>;
-  signIn?: Resolver<Maybe<ResolversTypes['SignInResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
+  deleteComment?: Resolver<ResolversTypes['DeleteCommentResponse'], ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id'>>;
+  signIn?: Resolver<ResolversTypes['SignInResponse'], ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
   toggleLike?: Resolver<ResolversTypes['LikeToggleResponse'], ParentType, ContextType, RequireFields<MutationToggleLikeArgs, 'articleId' | 'userId'>>;
   updateArticle?: Resolver<ResolversTypes['UpdateArticleResponse'], ParentType, ContextType, RequireFields<MutationUpdateArticleArgs, 'articleId'>>;
-  updateComment?: Resolver<Maybe<ResolversTypes['UpdateCommentResponse']>, ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'content' | 'id'>>;
+  updateComment?: Resolver<ResolversTypes['UpdateCommentResponse'], ParentType, ContextType, RequireFields<MutationUpdateCommentArgs, 'content' | 'id'>>;
   updateUser?: Resolver<ResolversTypes['UpdateUserResponse'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id'>>;
 };
 
